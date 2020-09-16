@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import BackgroundImage from '../assets/images/background.jpeg';
 
 const GlobalStyles = createGlobalStyle`
   :root {
@@ -45,7 +46,11 @@ const GlobalStyles = createGlobalStyle`
     width: 100vw;
     height: 100vh;
     color: black;
+    font-size: 18px;
     overflow-x: hidden;
+
+    background-image: url('${BackgroundImage}');
+    background-size: cover;
   }
 
   blockquote, q {
