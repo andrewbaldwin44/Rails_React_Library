@@ -3,7 +3,10 @@ import BackgroundImage from '../assets/images/background.jpeg';
 
 const GlobalStyles = createGlobalStyle`
   :root {
+    --light-blue: #40c4ff;
+    --light-gray: #9e9e9e;
 
+    --authentication-form-width: 400px;
   }
 
   *,
