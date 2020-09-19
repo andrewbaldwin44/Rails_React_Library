@@ -143,7 +143,6 @@ const PageLabel = styled.h2`
   font-weight: bold;
   align-self: flex-start;
   padding: 15px 10px;
-  color: white;
   text-shadow: 1px 1px 5px black;
 `;
 

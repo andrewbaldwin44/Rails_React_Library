@@ -22,7 +22,6 @@ const Wrapper = styled.div`
   h2 {
     font-family: 'Oswald', sans-serif;
     font-size: 1.4em;
-    color: white;
     padding: 15px 10px;
     text-shadow: 4px 4px 5px black;
   }

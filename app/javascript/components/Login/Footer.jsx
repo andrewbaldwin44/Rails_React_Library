@@ -48,6 +48,7 @@ const Wrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    color: black;
     border: 1px solid black;
     border-radius: 6px;
     background-color: white;
