@@ -4,6 +4,8 @@ import withFirebaseAuth from 'react-with-firebase-auth';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
+import { postDatabase } from '../utils/authentication';
+
 export const AuthenticationContext = createContext(null);
 
 const firebaseConfig = {
@@ -18,7 +20,6 @@ const firebaseConfig = {
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const firebaseAppAuth = firebaseApp.auth();
-const database = firebase.firestore();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 function createUserWithEmail(email, password) {
@@ -41,13 +42,21 @@ function AuthenticationProvider({ children, signOut, user }) {
     setUserData(null);
   }
 
+  const parseUser = ({ uid: userID, email }) => {
+    return {
+      email,
+      userID,
+    }
+  }
+
   useEffect(() => {
     let userDataObserver;
 
     if (user) {
-      const { uid: userID, email, photoUrl } = user;
+      const userData = parseUser(user);
 
-      setUserData({ userID, email, photoUrl });
+      postDatabase('/users/create', userData);
+      setUserData(userData);
     }
     else if (user === null) {
       setUserData({});
