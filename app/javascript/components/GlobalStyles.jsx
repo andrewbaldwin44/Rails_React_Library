@@ -48,7 +48,7 @@ const GlobalStyles = createGlobalStyle`
   	line-height: 1;
     width: 100vw;
     height: 100vh;
-    color: black;
+    color: white;
     font-size: 18px;
     overflow-x: hidden;
 
