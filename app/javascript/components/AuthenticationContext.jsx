@@ -37,9 +37,11 @@ function signInWithGoogle() {
 function AuthenticationProvider({ children, signOut, user }) {
   const [userData, setUserData] = useState(null);
 
+  const resetUserData = () => setUserData(null);
+
   const handleSignOut = () => {
     signOut();
-    setUserData(null);
+    resetUserData();
   }
 
   const parseUser = ({ email, displayName, uid: userID }) => {
@@ -51,13 +53,11 @@ function AuthenticationProvider({ children, signOut, user }) {
   }
 
   useEffect(() => {
-    let userDataObserver;
-
     if (user) {
-      const userData = parseUser(user);
+      const newUserData = parseUser(user);
 
-      postDatabase('/users/create', userData);
-      setUserData(userData);
+      postDatabase('/users/create', newUserData);
+      setUserData(newUserData);
     }
     else if (user === null) {
       setUserData({});
@@ -68,6 +68,7 @@ function AuthenticationProvider({ children, signOut, user }) {
     <AuthenticationContext.Provider
       value={{
         userData,
+        resetUserData,
         createUserWithEmail,
         signInWithEmail,
         signInWithGoogle,

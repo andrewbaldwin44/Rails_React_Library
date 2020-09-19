@@ -9,9 +9,11 @@ import { AuthenticationContext } from '../AuthenticationContext';
 function Footer({ accountCreated, successRedirect, sendErrorCode }) {
   const {
     signInWithGoogle,
+    resetUserData,
   } = useContext(AuthenticationContext);
 
   const googleLogin = () => {
+    resetUserData();
     signInWithGoogle()
       .then(successRedirect)
       .catch(sendErrorCode);

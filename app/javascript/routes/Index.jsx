@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
 
 import Login from '../components/Login/Index';
 import Library from '../components/Library';
@@ -13,7 +14,7 @@ export default (
           <Login accountCreated={true} />
       </Route>
       <Route path="/sign_up" exact component={Login} />
-      <Route path="/library" exact component={Library} />
+      <ProtectedRoute path="/library" exact component={Library} />
       <Route path="/users/profile" exact component={Profile} />
       <Route path="/*" exact component={FourOhFour} />
     </Switch>
