@@ -22,6 +22,7 @@ function Login({ accountCreated }) {
   const {
     createUserWithEmail,
     signInWithEmail,
+    resetUserData,
   } = useContext(AuthenticationContext);
 
   const [email, setEmail] = useState('');
@@ -59,6 +60,7 @@ function Login({ accountCreated }) {
 
   const userSignup = () => {
     if (isStrongPassword(password)) {
+      resetUserData();
       createUserWithEmail(email, password)
         .then(successRedirect)
         .catch(sendErrorCode);
@@ -72,6 +74,7 @@ function Login({ accountCreated }) {
   }
 
   const userLogin = () => {
+    resetUserData();
     signInWithEmail(email, password)
       .then(successRedirect)
       .catch(sendErrorCode);
