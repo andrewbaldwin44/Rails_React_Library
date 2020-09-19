@@ -42,9 +42,10 @@ function AuthenticationProvider({ children, signOut, user }) {
     setUserData(null);
   }
 
-  const parseUser = ({ uid: userID, email }) => {
+  const parseUser = ({ email, displayName, uid: userID }) => {
     return {
       email,
+      username: displayName || email,
       userID,
     }
   }
