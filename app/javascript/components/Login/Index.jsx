@@ -165,6 +165,7 @@ const StyledForm = styled.form`
 const SubmitButton = styled.button`
   height: 50px;
   width: 100%;
+  color: black;
   border: 2px solid white;
   border-radius: 6px;
   transition: all 0.4s ease-in;

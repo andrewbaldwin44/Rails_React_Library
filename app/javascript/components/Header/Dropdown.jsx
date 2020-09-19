@@ -61,6 +61,7 @@ const DropdownMenu = styled.div`
   flex-direction: column;
   position: absolute;
   right: 0;
+  color: black;
   margin-top: 5px;
   background-color: white;
   width: 230px;
