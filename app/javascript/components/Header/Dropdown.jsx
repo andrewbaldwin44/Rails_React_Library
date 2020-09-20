@@ -9,7 +9,7 @@ function Dropdown() {
     userData: {
       email,
       username,
-      photoURL,
+      avatar,
     },
     handleSignOut,
   } = useContext(AuthenticationContext);
@@ -35,7 +35,7 @@ function Dropdown() {
   return (
     <Wrapper>
       <button onClick={toggleDropdown}>
-        <ProfileImage src={photoURL} alt='Profile Image' ref={dropdownButton} />
+        <ProfileImage src={avatar} alt='Profile Image' ref={dropdownButton} />
       </button>
       <DropdownMenu dropdownState={dropdownState}>
         <h4>{username}</h4>
