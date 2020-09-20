@@ -1,14 +1,30 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 
 import BookAdd from './BookAdd';
 import Dropdown from './Dropdown';
+import BookMenu from '../BookMenu';
 
 function Header() {
+  const [openMenu, setOpenMenu] = useState(false);
+
+  const isMenuItem = element => !element.classList.contains('menu-item');
+
+  const handleMenuClose = () => {
+    window.onclick = ({ target }) => {
+      if (isMenuItem(target)) setOpenMenu(false);
+    }
+  }
+
+  useEffect(handleMenuClose, [openMenu]);
+
   return (
     <Wrapper>
-      <BookAdd />
+      <BookAdd setOpenMenu={setOpenMenu} />
       <Dropdown />
+      {openMenu && (
+        <BookMenu />
+      )}
     </Wrapper>
   )
 }
