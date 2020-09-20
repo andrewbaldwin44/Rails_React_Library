@@ -4,6 +4,7 @@ import withFirebaseAuth from 'react-with-firebase-auth';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
+import DefaultProfile from '../assets/images/default_avatar.jpg';
 import { postDatabase } from '../utils/authentication';
 
 export const AuthenticationContext = createContext(null);
@@ -44,10 +45,11 @@ function AuthenticationProvider({ children, signOut, user }) {
     resetUserData();
   }
 
-  const parseUser = ({ email, displayName, uid: userID }) => {
+  const parseUser = ({ email, displayName, photoURL, uid: userID }) => {
     return {
       email,
       username: displayName || email,
+      avatar: photoURL || DefaultProfile,
       userID,
     }
   }
@@ -55,6 +57,8 @@ function AuthenticationProvider({ children, signOut, user }) {
   useEffect(() => {
     if (user) {
       const newUserData = parseUser(user);
+
+      console.log(newUserData)
 
       postDatabase('/users/create', newUserData);
       setUserData(newUserData);
