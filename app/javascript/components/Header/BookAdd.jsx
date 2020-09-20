@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { RiAddFill } from 'react-icons/ri';
 
-function BookAdd() {
+function BookAdd({ setOpenMenu }) {
   return (
-    <Wrapper>
-      <RiAddFill />
+    <Wrapper onClick={() => setOpenMenu(true)} className='menu-item'>
+      <RiAddFill className='menu-item' />
     </Wrapper>
   )
 }
