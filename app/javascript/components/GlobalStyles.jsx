@@ -5,6 +5,7 @@ const GlobalStyles = createGlobalStyle`
   :root {
     --light-blue: #40c4ff;
     --light-gray: #9e9e9e;
+    --light-green: #00e676;
 
     --authentication-form-width: 400px;
   }

@@ -58,8 +58,6 @@ function AuthenticationProvider({ children, signOut, user }) {
     if (user) {
       const newUserData = parseUser(user);
 
-      console.log(newUserData)
-
       postDatabase('/users/create', newUserData);
       setUserData(newUserData);
     }
