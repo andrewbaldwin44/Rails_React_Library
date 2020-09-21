@@ -4,7 +4,7 @@ import { RiAddFill } from 'react-icons/ri';
 
 function BookAdd({ setOpenMenu }) {
   return (
-    <Wrapper onClick={() => setOpenMenu(true)} className='menu-item'>
+    <Wrapper onClick={() => setOpenMenu(true)}>
       <RiAddFill className='menu-item' />
     </Wrapper>
   )

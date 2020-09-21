@@ -8,11 +8,11 @@ import BookMenu from '../BookMenu';
 function Header() {
   const [openMenu, setOpenMenu] = useState(false);
 
-  const isMenuItem = element => !element.classList.contains('menu-item');
+  const isMenuOverlay = element => element.classList.contains('menu-overlay');
 
   const handleMenuClose = () => {
     window.onclick = ({ target }) => {
-      if (isMenuItem(target)) setOpenMenu(false);
+      if (isMenuOverlay(target)) setOpenMenu(false);
     }
   }
 
