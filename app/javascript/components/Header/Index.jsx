@@ -22,9 +22,7 @@ function Header() {
     <Wrapper>
       <BookAdd setOpenMenu={setOpenMenu} />
       <Dropdown />
-      {openMenu && (
-        <BookMenu />
-      )}
+      <BookMenu openMenu={openMenu} />
     </Wrapper>
   )
 }

@@ -1,20 +1,51 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useEffect, createRef } from 'react';
+import styled, { keyframes } from 'styled-components';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { BsBook } from 'react-icons/bs';
 import { FaBookOpen } from 'react-icons/fa';
 
-function BookMenu() {
+function BookMenu({ openMenu }) {
+  const menuOverlay = createRef();
+  const bookForm = createRef();
+
   const submitBook = event => {
     event.preventDefault();
   }
 
-  return (
-    <Wrapper className='menu-overlay'>
+  const closeMenu = () => {
+    const menuElement = menuOverlay.current;
+    const formElement = bookForm.current;
 
-      <Form onSubmit={submitBook}>
+    menuElement.classList.add('fadeOut');
+    formElement.classList.add('fadeOut');
+
+    menuElement.addEventListener('animationend', () => {
+      menuElement.style.display = 'none';
+      menuElement.classList.remove('fadeOut');
+      formElement.classList.remove('fadeOut');
+    }, { once: true });
+  }
+
+  const isMenuOpen = () => menuOverlay.current.style.display !== 'none';
+
+  const toggleMenu = () => {
+    const menuElement = menuOverlay.current;
+
+    if (openMenu) {
+      menuElement.style.display = 'flex';
+    }
+    else if (isMenuOpen()) {
+      closeMenu();
+    }
+  }
+
+  useEffect(toggleMenu, [openMenu]);
+
+  return (
+    <Wrapper className='menu-overlay' ref={menuOverlay} style={{ display: 'none' }}>
+      <Form onSubmit={submitBook} ref={bookForm}>
         <fieldset>
           <label htmlFor='title'>Title</label>
           <input
@@ -54,9 +85,41 @@ function BookMenu() {
   )
 }
 
+const formIn = keyframes`
+  90% {
+    transform: scale(1.04);
+  }
+  100% {
+    transform: scale(1);
+  }
+`;
+
+const overlayIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const formOut = keyframes`
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0);
+  }
+`;
+
+const overlayOut = keyframes`
+  to {
+    opacity: 0;
+  }
+`;
+
 const Wrapper = styled.div`
   position: fixed;
-  display: flex;
   align-items: center;
   justify-content: center;
   width: 100vw;
@@ -64,6 +127,13 @@ const Wrapper = styled.div`
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.5);
+
+  animation-name: ${overlayIn};
+  animation-duration: 0.4s;
+
+  &.fadeOut {
+    animation-name: ${overlayOut};
+  }
 `;
 
 const Form = styled.form`
@@ -72,6 +142,11 @@ const Form = styled.form`
   flex-direction: column;
   justify-content: space-evenly;
   height: 70%;
+  transform: scale(0);
+
+  animation-name: ${formIn};
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
 
   fieldset {
     display: flex;
@@ -99,6 +174,10 @@ const Form = styled.form`
     align-items: center;
     justify-content: center;
     width: 100%;
+  }
+
+  &.fadeOut {
+    animation-name: ${formOut};
   }
 `;
 
