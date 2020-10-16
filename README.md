@@ -41,6 +41,7 @@ The page will reload if you make edits.
 - Ruby On Rails
 - React.js
 - PostgreSQL Database
+- Google Books API
 - Styled components
 
 ## Author
