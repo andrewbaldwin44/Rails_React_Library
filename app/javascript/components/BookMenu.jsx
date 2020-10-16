@@ -6,6 +6,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { BsBook } from 'react-icons/bs';
 import { FaBookOpen } from 'react-icons/fa';
 
+import { snakeCase } from '../utils/index';
+
 function BookMenu({ openMenu }) {
   const menuOverlay = createRef();
   const bookForm = createRef();
@@ -41,6 +43,14 @@ function BookMenu({ openMenu }) {
     }
   }
 
+  const handleBookSearch = (event) => {
+    const searchValue = snakeCase(event.target.value);
+
+    fetch(`/book_search?search=${searchValue}`)
+      .then(response => response.json())
+      .then(data => console.log(data));
+  }
+
   useEffect(toggleMenu, [openMenu]);
 
   return (
@@ -51,6 +61,7 @@ function BookMenu({ openMenu }) {
           <input
             name='title'
             id='title'
+            onInput={handleBookSearch}
           />
         </fieldset>
 
