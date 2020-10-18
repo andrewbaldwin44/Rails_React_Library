@@ -5,7 +5,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
 import DefaultProfile from '../assets/images/default_avatar.jpg';
-import { postDatabase } from '../utils/authentication';
+import { postDatabase } from '../utils/request';
 
 export const AuthenticationContext = createContext(null);
 
