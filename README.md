@@ -39,8 +39,10 @@ The page will reload if you make edits.
 - Ruby
 - JavaScript
 - Ruby On Rails
-- React.js
 - PostgreSQL Database
+- React.js
+- Redux.js
+- Redux Saga
 - Google Books API
 - Styled components
 
