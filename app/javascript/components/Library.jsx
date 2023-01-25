@@ -12,16 +12,10 @@ function Library() {
       {SHELVES.map((shelf, index) => {
         const { title, className } = shelf;
 
-        return (
-          <Shelf
-            key={`shelf${index}`}
-            title={title}
-            className={className}
-          />
-        )
+        return <Shelf key={`shelf${index}`} title={title} className={className} />;
       })}
-  </Wrapper>
-  )
+    </Wrapper>
+  );
 }
 
 const Wrapper = styled.div`

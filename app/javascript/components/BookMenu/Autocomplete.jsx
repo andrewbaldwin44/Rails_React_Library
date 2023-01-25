@@ -4,40 +4,39 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 
 const bookData = state => ({
-  bookData: state.google_books.bookData
-})
+  bookData: state.google_books.bookData,
+});
 
 function Autocomplete({ bookData }) {
   return (
     <Wrapper>
-      {bookData && bookData.map(data => {
-        const {
-          volumeInfo: {
-            authors,
-            categories,
-            title,
-            imageLinks: {
-              smallThumbnail
+      {bookData &&
+        bookData.map(data => {
+          const {
+            volumeInfo: {
+              authors,
+              categories,
+              title,
+              imageLinks: { smallThumbnail },
             },
-          },
-          id
-        } = data;
+            id,
+          } = data;
 
-        const authorsList = authors ? authors.toString() : '';
+          const authorsList = authors ? authors.toString() : '';
 
-        return (
-          <Item key={id}>
-            <div>
-              <img src={smallThumbnail} alt={title} />
-            </div>
+          return (
+            <Item key={id}>
+              <div>
+                <img src={smallThumbnail} alt={title} />
+              </div>
 
-            <div>
-              <span>{title}</span>
-              <span className='author'>By {authorsList}</span>
-            </div>
-          </Item>
-        )
-      })}
+              <div>
+                <span>{title}</span>
+                <span className='author'>By {authorsList}</span>
+              </div>
+            </Item>
+          );
+        })}
     </Wrapper>
   );
 }

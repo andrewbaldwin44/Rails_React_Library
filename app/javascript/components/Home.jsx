@@ -8,7 +8,7 @@ function Home() {
       <h1>Welcome!</h1>
       <Link to='login'>Login</Link>
     </Wrapper>
-  )
+  );
 }
 
 const Wrapper = styled.div`

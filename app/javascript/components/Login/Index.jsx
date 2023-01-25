@@ -1,6 +1,6 @@
-import React, { useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 
 import Footer from './Footer';
@@ -19,11 +19,7 @@ const {
 } = AUTHENTICATION_ERROR_MESSAGES;
 
 function Login({ accountCreated }) {
-  const {
-    createUserWithEmail,
-    signInWithEmail,
-    resetUserData,
-  } = useContext(AuthenticationContext);
+  const { createUserWithEmail, signInWithEmail, resetUserData } = useContext(AuthenticationContext);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -31,7 +27,7 @@ function Login({ accountCreated }) {
 
   const history = useHistory();
 
-  const createUserErrorMessage = (code) => {
+  const createUserErrorMessage = code => {
     let newErrorMessage = '';
     switch (code) {
       case 'auth/user-not-found':
@@ -52,7 +48,7 @@ function Login({ accountCreated }) {
     }
 
     setErrorMessage(newErrorMessage);
-  }
+  };
 
   const successRedirect = () => history.push('/library');
   const sendErrorCode = ({ code }) => createUserErrorMessage(code);
@@ -61,31 +57,25 @@ function Login({ accountCreated }) {
   const userSignup = () => {
     if (isStrongPassword(password)) {
       resetUserData();
-      createUserWithEmail(email, password)
-        .then(successRedirect)
-        .catch(sendErrorCode);
-    }
-    else if (password.length < minimumPasswordLength) {
+      createUserWithEmail(email, password).then(successRedirect).catch(sendErrorCode);
+    } else if (password.length < minimumPasswordLength) {
       setErrorMessage(passwordTooShort);
-    }
-    else {
+    } else {
       setErrorMessage(missingPasswordRequirements);
     }
-  }
+  };
 
   const userLogin = () => {
     resetUserData();
-    signInWithEmail(email, password)
-      .then(successRedirect)
-      .catch(sendErrorCode);
-  }
+    signInWithEmail(email, password).then(successRedirect).catch(sendErrorCode);
+  };
 
   const submitForm = event => {
     event.preventDefault();
 
     if (accountCreated) userLogin();
-    else userSignup()
-  }
+    else userSignup();
+  };
 
   return (
     <Wrapper>
@@ -93,20 +83,20 @@ function Login({ accountCreated }) {
         <PageLabel>{accountCreated ? 'Log In' : 'Sign Up'}</PageLabel>
         <StyledForm onSubmit={submitForm}>
           <TextField
-            type="email"
-            label="Email"
+            type='email'
+            label='Email'
             onChange={event => setEmail(event.target.value)}
-            variant="outlined"
+            variant='outlined'
             required
           />
           <TextField
-            type="password"
-            label="Password"
+            type='password'
+            label='Password'
             onChange={event => setPassword(event.target.value)}
-            variant="outlined"
+            variant='outlined'
             required
           />
-          <SubmitButton type="submit">{accountCreated ? 'Log In' : 'Sign Up'}</SubmitButton>
+          <SubmitButton type='submit'>{accountCreated ? 'Log In' : 'Sign Up'}</SubmitButton>
           <ErrorMessage errorMessage={errorMessage}>
             <span>{errorMessage}</span>
           </ErrorMessage>
@@ -118,7 +108,7 @@ function Login({ accountCreated }) {
         />
       </Container>
     </Wrapper>
-  )
+  );
 }
 
 const Wrapper = styled.div`
@@ -159,7 +149,7 @@ const StyledForm = styled.form`
   height: 40%;
   width: 100%;
   background-color: white;
-  box-shadow: 1px 1px 5px #4B515D;
+  box-shadow: 1px 1px 5px #4b515d;
 `;
 
 const SubmitButton = styled.button`
@@ -176,12 +166,12 @@ const SubmitButton = styled.button`
 `;
 
 const ErrorMessage = styled.div`
-  display: ${({ errorMessage }) => errorMessage === '' ? 'none' : 'flex'};
+  display: ${({ errorMessage }) => (errorMessage === '' ? 'none' : 'flex')};
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 50px;
-  background-color: #FFE3E3;
+  background-color: #ffe3e3;
   color: #f13240;
   padding: 20px 10px;
 `;

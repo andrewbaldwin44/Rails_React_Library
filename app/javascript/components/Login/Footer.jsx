@@ -2,47 +2,41 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import GoogleIcon from  '../../assets/images/google-icon.svg';
+import GoogleIcon from '../../assets/images/google-icon.svg';
 
 import { AuthenticationContext } from '../AuthenticationContext';
 
 function Footer({ accountCreated, successRedirect, sendErrorCode }) {
-  const {
-    signInWithGoogle,
-    resetUserData,
-  } = useContext(AuthenticationContext);
+  const { signInWithGoogle, resetUserData } = useContext(AuthenticationContext);
 
   const googleLogin = () => {
     resetUserData();
-    signInWithGoogle()
-      .then(successRedirect)
-      .catch(sendErrorCode);
-  }
+    signInWithGoogle().then(successRedirect).catch(sendErrorCode);
+  };
 
   return (
     <Wrapper>
-      <Seperator><span>OR</span></Seperator>
+      <Seperator>
+        <span>OR</span>
+      </Seperator>
 
-      <GoogleButton className='auth-button'
-        onClick={googleLogin}
-      >
+      <GoogleButton className='auth-button' onClick={googleLogin}>
         <img src={GoogleIcon} alt='Google' />
         <span>Continue with Google</span>
       </GoogleButton>
       {accountCreated ? (
-          <div className='auth-button'>
-            <span>{'New here? '}</span>
-            <StyledLink to='/sign_up'>Create an Account</StyledLink>
-          </div>
-        ) : (
-          <div className='auth-button'>
-            <span>Already Have an Account?</span>
-            <StyledLink to='/'>Log In</StyledLink>
-          </div>
-        )
-      }
+        <div className='auth-button'>
+          <span>{'New here? '}</span>
+          <StyledLink to='/sign_up'>Create an Account</StyledLink>
+        </div>
+      ) : (
+        <div className='auth-button'>
+          <span>Already Have an Account?</span>
+          <StyledLink to='/'>Log In</StyledLink>
+        </div>
+      )}
     </Wrapper>
-  )
+  );
 }
 
 const Wrapper = styled.div`
@@ -54,7 +48,7 @@ const Wrapper = styled.div`
     border: 1px solid black;
     border-radius: 6px;
     background-color: white;
-    box-shadow: 1px 1px 5px #4B515D;
+    box-shadow: 1px 1px 5px #4b515d;
     height: 65px;
     width: var(--authentication-form-width);
   }
@@ -70,8 +64,9 @@ const Seperator = styled.p`
     display: inline-block;
     position: relative;
 
-    &:before, :after {
-      content: "";
+    &:before,
+    :after {
+      content: '';
       position: absolute;
       border-bottom: 1px solid rgba(255, 255, 255, 0.7);
       width: calc(var(--authentication-form-width) / 2 - 30px);

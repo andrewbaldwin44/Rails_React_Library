@@ -4,6 +4,6 @@ import BookMenu from './BookMenu';
 
 const bookSearch = {
   searchBook,
-}
+};
 
 export default connect(null, bookSearch)(BookMenu);

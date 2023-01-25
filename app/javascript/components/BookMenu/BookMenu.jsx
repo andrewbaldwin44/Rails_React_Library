@@ -16,7 +16,7 @@ function BookMenu({ openMenu, searchBook }) {
 
   const submitBook = event => {
     event.preventDefault();
-  }
+  };
 
   const closeMenu = () => {
     const menuElement = menuOverlay.current;
@@ -25,12 +25,16 @@ function BookMenu({ openMenu, searchBook }) {
     menuElement.classList.add('fadeOut');
     formElement.classList.add('fadeOut');
 
-    menuElement.addEventListener('animationend', () => {
-      menuElement.style.display = 'none';
-      menuElement.classList.remove('fadeOut');
-      formElement.classList.remove('fadeOut');
-    }, { once: true });
-  }
+    menuElement.addEventListener(
+      'animationend',
+      () => {
+        menuElement.style.display = 'none';
+        menuElement.classList.remove('fadeOut');
+        formElement.classList.remove('fadeOut');
+      },
+      { once: true },
+    );
+  };
 
   const isMenuOpen = () => menuOverlay.current.style.display !== 'none';
 
@@ -39,53 +43,47 @@ function BookMenu({ openMenu, searchBook }) {
 
     if (openMenu) {
       menuElement.style.display = 'flex';
-    }
-    else if (isMenuOpen()) {
+    } else if (isMenuOpen()) {
       closeMenu();
     }
-  }
+  };
 
-  const handleBookSearch = (event) => {
+  const handleBookSearch = event => {
     const searchValue = snakeCase(event.target.value);
 
     searchBook(searchValue);
-  }
+  };
 
   useEffect(toggleMenu, [openMenu]);
 
   return (
     <Wrapper className='menu-overlay' ref={menuOverlay} style={{ display: 'none' }}>
-      <Form autocomplete="off" onSubmit={submitBook} ref={bookForm}>
+      <Form autocomplete='off' onSubmit={submitBook} ref={bookForm}>
         <fieldset className='autocomplete-input'>
           <label htmlFor='title'>Title</label>
-          <input
-            name='title'
-            id='title'
-            onInput={handleBookSearch}
-            autoComplete="off"
-          />
+          <input name='title' id='title' onInput={handleBookSearch} autoComplete='off' />
           <Autocomplete />
         </fieldset>
 
         <fieldset>
           <label htmlFor='author'>Author</label>
-          <input
-            name='author'
-            id='author'
-          />
+          <input name='author' id='author' />
         </fieldset>
 
         <fieldset>
           <label htmlFor='genre'>Genre</label>
-          <input
-            name='genre'
-            id='genre'
-          />
+          <input name='genre' id='genre' />
         </fieldset>
 
         <fieldset className='centered-field'>
           <ReadBook
-            control={<Checkbox icon={<BsBook />} checkedIcon={<FaBookOpen className='checked' />} name='read-book' />}
+            control={
+              <Checkbox
+                icon={<BsBook />}
+                checkedIcon={<FaBookOpen className='checked' />}
+                name='read-book'
+              />
+            }
             label='Read'
           />
         </fieldset>
@@ -95,7 +93,7 @@ function BookMenu({ openMenu, searchBook }) {
         </fieldset>
       </Form>
     </Wrapper>
-  )
+  );
 }
 
 const formIn = keyframes`
@@ -167,8 +165,8 @@ const Form = styled.form`
     width: 100%;
 
     label {
-        padding: 10px 5px;
-        font-size: 1.1em;
+      padding: 10px 5px;
+      font-size: 1.1em;
     }
 
     input {

@@ -8,7 +8,7 @@ function Shelf({ title, width, className }) {
       <h2>{title}</h2>
       <Container />
     </Wrapper>
-  )
+  );
 }
 
 Shelf.defaultProps = {

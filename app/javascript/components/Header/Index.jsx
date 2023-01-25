@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled from "styled-components";
+import styled from 'styled-components';
 
 import BookAdd from './BookAdd';
 import Dropdown from './Dropdown';
@@ -13,8 +13,8 @@ function Header() {
   const handleMenuClose = () => {
     window.onclick = ({ target }) => {
       if (isMenuOverlay(target)) setOpenMenu(false);
-    }
-  }
+    };
+  };
 
   useEffect(handleMenuClose, [openMenu]);
 
@@ -24,7 +24,7 @@ function Header() {
       <Dropdown />
       <BookMenu openMenu={openMenu} />
     </Wrapper>
-  )
+  );
 }
 
 const Wrapper = styled.div`

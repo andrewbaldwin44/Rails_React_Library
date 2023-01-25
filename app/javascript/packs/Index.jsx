@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-import configureStore from "../store";
+import configureStore from '../store';
 import AuthenticationProvider from '../components/AuthenticationContext';
 import App from '../components/App';
 
@@ -16,5 +16,5 @@ document.addEventListener('DOMContentLoaded', () => {
       </AuthenticationProvider>
     </Provider>,
     document.getElementById('root'),
-  )
-})
+  );
+});

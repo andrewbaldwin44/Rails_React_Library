@@ -7,7 +7,7 @@ function BookAdd({ setOpenMenu }) {
     <Wrapper onClick={() => setOpenMenu(true)}>
       <RiAddFill className='menu-item' />
     </Wrapper>
-  )
+  );
 }
 
 const Wrapper = styled.button`

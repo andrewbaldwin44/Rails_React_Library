@@ -6,7 +6,7 @@ function* handleGoogleBookSearch({ searchValue }) {
 
   yield put({
     type: 'UPDATE_BOOK_DATA',
-    bookData
+    bookData,
   });
 }
 

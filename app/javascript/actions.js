@@ -1,4 +1,4 @@
-export const searchBook = (searchValue) => ({
-  type: "SEARCH_BOOK",
-  searchValue
+export const searchBook = searchValue => ({
+  type: 'SEARCH_BOOK',
+  searchValue,
 });

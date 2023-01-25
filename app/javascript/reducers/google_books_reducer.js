@@ -10,7 +10,7 @@ export default function itemsReducer(state = initialState, action) {
       return {
         ...state,
         bookData: newBookData,
-      }
+      };
     }
 
     default: {

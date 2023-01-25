@@ -13,7 +13,7 @@ export default (
     <Switch>
       <Route path='/' exact component={Home} />
       <Route path='/login' exact>
-          <Login accountCreated={true} />
+        <Login accountCreated={true} />
       </Route>
       <Route path='/sign_up' exact component={Login} />
       <ProtectedRoute path='/library' exact component={Library} />
@@ -21,4 +21,4 @@ export default (
       <Route path='/*' exact component={FourOhFour} />
     </Switch>
   </Router>
-)
+);

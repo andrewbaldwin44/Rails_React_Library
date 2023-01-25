@@ -5,42 +5,29 @@ import { AuthenticationContext } from '../components/AuthenticationContext';
 import { isContainingData } from '../utils/index';
 
 function ProtectedRoute({ component: Component, ...rest }) {
-  const {
-    userData,
-  } = useContext(AuthenticationContext);
+  const { userData } = useContext(AuthenticationContext);
 
   const getRouteComponent = props => {
     if (isContainingData(userData)) {
-      return (<Component {...props} />);
-    }
-    else {
+      return <Component {...props} />;
+    } else {
       return (
         <Redirect
           to={{
             pathname: '/login',
             state: {
-              from: props.location
-            }
+              from: props.location,
+            },
           }}
         />
-      )
+      );
     }
-  }
+  };
 
   if (!userData) {
-    return (
-      <div>
-          Loading...
-      </div>
-    )
-  }
-  else {
-    return (
-      <Route
-        {...rest}
-        render={getRouteComponent}
-      />
-    )
+    return <div>Loading...</div>;
+  } else {
+    return <Route {...rest} render={getRouteComponent} />;
   }
 }
 

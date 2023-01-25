@@ -6,11 +6,7 @@ import { AuthenticationContext } from '../AuthenticationContext';
 
 function Dropdown() {
   const {
-    userData: {
-      email,
-      username,
-      avatar,
-    },
+    userData: { email, username, avatar },
     handleSignOut,
   } = useContext(AuthenticationContext);
 
@@ -22,14 +18,14 @@ function Dropdown() {
   const signOutRedirect = () => {
     handleSignOut();
     history.push('/');
-  }
+  };
 
   const toggleDropdown = () => setDropdownState(!dropdownState);
 
   useEffect(() => {
     window.onclick = event => {
       if (dropdownButton.current) setDropdownState(false);
-    }
+    };
   });
 
   return (
@@ -41,23 +37,26 @@ function Dropdown() {
         <h4>{username}</h4>
         <Seperator />
         <Link to='users/profile'>View Profile</Link>
-        <button type='button' onClick={signOutRedirect}>Sign Out</button>
+        <button type='button' onClick={signOutRedirect}>
+          Sign Out
+        </button>
       </DropdownMenu>
     </Wrapper>
-  )
+  );
 }
 
 const Wrapper = styled.div`
   position: relative;
   display: inline-block;
 
-  button, a {
+  button,
+  a {
     cursor: pointer;
   }
 `;
 
 const DropdownMenu = styled.div`
-  display: ${({ dropdownState }) => dropdownState ? 'flex' : 'none'};
+  display: ${({ dropdownState }) => (dropdownState ? 'flex' : 'none')};
   flex-direction: column;
   position: absolute;
   right: 0;
