@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Header from './Header/Index';
+import Header from 'components/Header/Index';
 import { SHELVES } from '../constants';
-import Shelf from './Shelf';
+import Shelf from 'components/Shelf';
 
 function Library() {
   return (

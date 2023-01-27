@@ -1,8 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-function Shelf({ title, width, className }) {
+interface IShelf {
+  title: string;
+  className: string;
+}
+
+function Shelf({ title, className }: IShelf) {
   return (
     <Wrapper className={className}>
       <h2>{title}</h2>
