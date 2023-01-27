@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 
 import store from 'redux/store';
 import AuthenticationProvider from 'components/AuthenticationContext';
-import App from '../components/App';
+import App from 'App';
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(

@@ -27,6 +27,7 @@ module.exports = function (api) {
         },
         '@babel/preset-react',
       ],
+      '@rails/webpacker/package/babel/preset.js',
       '@babel/preset-typescript',
       (isProductionEnv || isDevelopmentEnv) && [
         '@babel/preset-env',
