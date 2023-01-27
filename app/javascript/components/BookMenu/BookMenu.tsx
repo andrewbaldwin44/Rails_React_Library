@@ -151,6 +151,10 @@ const Wrapper = styled.div`
 
 const Form = styled.form`
   position: relative;
+  background-color: #28231d;
+  border-radius: 5px;
+  box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.5);
+  padding: 10px 40px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;

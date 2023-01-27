@@ -54,6 +54,7 @@ const GlobalStyles = createGlobalStyle`
     overflow-x: hidden;
 
     background-image: url('${BackgroundImage}');
+    background-attachment: fixed;
     background-size: cover;
   }
 
