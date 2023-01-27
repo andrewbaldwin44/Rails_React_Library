@@ -1,4 +1,4 @@
-import React, { useEffect, createRef } from 'react';
+import { useEffect, createRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';

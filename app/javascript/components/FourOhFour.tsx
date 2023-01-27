@@ -1,5 +1,3 @@
-import React from 'react';
-
 function FourOhFour() {
   return <>Page not found!</>;
 }
