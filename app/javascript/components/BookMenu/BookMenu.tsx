@@ -6,11 +6,15 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { BsBook } from 'react-icons/bs';
 import { FaBookOpen } from 'react-icons/fa';
 
-import Autocomplete from './Autocomplete';
+import Autocomplete from 'components/BookMenu/Autocomplete';
 
-import { snakeCase } from '../../utils/index';
+interface IBookMenu {
+  openMenu: () => void;
+  onBookSearch: (search: string) => void;
+  bookData: any;
+}
 
-function BookMenu({ openMenu, searchBook }) {
+function BookMenu({ openMenu, onBookSearch, bookData }: IBookMenu) {
   const menuOverlay = createRef();
   const bookForm = createRef();
 
@@ -49,9 +53,7 @@ function BookMenu({ openMenu, searchBook }) {
   };
 
   const handleBookSearch = event => {
-    const searchValue = snakeCase(event.target.value);
-
-    searchBook(searchValue);
+    onBookSearch(event.target.value);
   };
 
   useEffect(toggleMenu, [openMenu]);
@@ -62,7 +64,7 @@ function BookMenu({ openMenu, searchBook }) {
         <fieldset className='autocomplete-input'>
           <label htmlFor='title'>Title</label>
           <input name='title' id='title' onInput={handleBookSearch} autoComplete='off' />
-          <Autocomplete />
+          <Autocomplete items={bookData} />
         </fieldset>
 
         <fieldset>

@@ -1,17 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { connect } from 'react-redux';
-
-const bookData = state => ({
-  bookData: state.google_books.bookData,
-});
-
-function Autocomplete({ bookData }) {
+export default function Autocomplete({ items }) {
   return (
     <Wrapper>
-      {bookData &&
-        bookData.map(data => {
+      {items &&
+        items.map(data => {
           const {
             volumeInfo: {
               authors,
@@ -73,5 +67,3 @@ const Item = styled.div`
     }
   }
 `;
-
-export default connect(bookData)(Autocomplete);
