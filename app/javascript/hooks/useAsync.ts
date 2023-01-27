@@ -8,20 +8,23 @@ function useAsync(
   const [value, setValue] = useState(null);
   const [error, setError] = useState(null);
 
-  const execute = useCallback(() => {
-    setValue(null);
-    setError(null);
+  const execute = useCallback(
+    (...args) => {
+      setValue(null);
+      setError(null);
 
-    return asyncFunction()
-      .then(response => {
-        setValue(response);
-        setIsLoading(false);
-      })
-      .catch(error => {
-        setError(error);
-        setIsLoading(false);
-      });
-  }, [asyncFunction]);
+      return asyncFunction(...args)
+        .then(response => {
+          setValue(response);
+          setIsLoading(false);
+        })
+        .catch(error => {
+          setError(error);
+          setIsLoading(false);
+        });
+    },
+    [asyncFunction],
+  );
 
   useEffect(() => {
     if (shouldExecuteImmediately) {

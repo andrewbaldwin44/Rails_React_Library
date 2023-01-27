@@ -5,32 +5,16 @@ export default function Autocomplete({ items }) {
   return (
     <Wrapper>
       {items &&
-        items.map(data => {
-          const {
-            volumeInfo: {
-              authors,
-              categories,
-              title,
-              imageLinks: { smallThumbnail },
-            },
-            id,
-          } = data;
-
-          const authorsList = authors ? authors.toString() : '';
-
-          return (
-            <Item key={id}>
-              <div>
-                <img src={smallThumbnail} alt={title} />
-              </div>
-
-              <div>
-                <span>{title}</span>
-                <span className='author'>By {authorsList}</span>
-              </div>
-            </Item>
-          );
-        })}
+        items.length &&
+        items.map(({ id, authors, categories, title, imageLinks }) => (
+          <Item key={id}>
+            {imageLinks && <img src={imageLinks.smallThumbnail} alt={title} />}
+            <div>
+              <span>{title}</span>
+              <span className='author'>By {authors}</span>
+            </div>
+          </Item>
+        ))}
     </Wrapper>
   );
 }

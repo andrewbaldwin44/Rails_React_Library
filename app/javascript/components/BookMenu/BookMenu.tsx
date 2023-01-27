@@ -53,6 +53,7 @@ function BookMenu({ openMenu, onBookSearch, bookData }: IBookMenu) {
   };
 
   const handleBookSearch = event => {
+    console.log({ b: event.target.value });
     onBookSearch(event.target.value);
   };
 

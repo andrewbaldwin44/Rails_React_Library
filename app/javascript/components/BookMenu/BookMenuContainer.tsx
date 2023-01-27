@@ -8,12 +8,17 @@ interface IBookMenuContainer {
 }
 
 function BookMenuContainer({ openMenu }: IBookMenuContainer) {
-  const { execute: onBookSearch, value: bookData } = useAsync((searchValue: string) =>
+  const { execute: onBookSearch, value: bookSearch } = useAsync((searchValue: string) =>
     asyncRequest('book_search', { query: { search: searchValue } }),
   );
-  console.log({ bookData });
 
-  return <BookMenu openMenu={openMenu} onBookSearch={onBookSearch} bookData={bookData} />;
+  return (
+    <BookMenu
+      openMenu={openMenu}
+      onBookSearch={onBookSearch}
+      bookData={bookSearch && bookSearch.result}
+    />
+  );
 }
 
 export default BookMenuContainer;
