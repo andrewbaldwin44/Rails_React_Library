@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Route, Redirect, useLocation } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 
 import { AuthenticationContext } from '../components/AuthenticationContext';
 import { isContainingData } from '../utils/index';
