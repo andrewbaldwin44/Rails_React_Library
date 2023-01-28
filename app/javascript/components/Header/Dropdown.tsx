@@ -1,14 +1,15 @@
-import { useContext, useEffect, useState, createRef } from 'react';
+import { useEffect, useState, createRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { AuthenticationContext } from '../AuthenticationContext';
+import useAuth from 'auth/useAuth';
+import { useSelector } from 'redux/hooks';
 
 function Dropdown() {
   const {
     userData: { email, username, avatar },
-    handleSignOut,
-  } = useContext(AuthenticationContext);
+    signOut,
+  } = useAuth();
 
   const [dropdownState, setDropdownState] = useState(false);
   const dropdownButton = createRef();
@@ -16,7 +17,7 @@ function Dropdown() {
   const history = useHistory();
 
   const signOutRedirect = () => {
-    handleSignOut();
+    signOut();
     history.push('/');
   };
 

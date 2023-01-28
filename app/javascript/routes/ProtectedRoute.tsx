@@ -1,14 +1,12 @@
-import { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-import { AuthenticationContext } from '../components/AuthenticationContext';
-import { isContainingData } from '../utils/index';
+import { useSelector } from 'redux/hooks';
 
 function ProtectedRoute({ component: Component, ...rest }) {
-  const { userData } = useContext(AuthenticationContext);
+  const user = useSelector(({ user }) => user);
 
   const getRouteComponent = props => {
-    if (isContainingData(userData)) {
+    if (user.email) {
       return <Component {...props} />;
     } else {
       return (
@@ -24,11 +22,7 @@ function ProtectedRoute({ component: Component, ...rest }) {
     }
   };
 
-  if (!userData) {
-    return <div>Loading...</div>;
-  } else {
-    return <Route {...rest} render={getRouteComponent} />;
-  }
+  return <Route {...rest} render={getRouteComponent} />;
 }
 
 export default ProtectedRoute;

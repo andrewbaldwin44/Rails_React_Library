@@ -1,4 +1,3 @@
-import { camelCaseKeys, snakeCaseKeys, camelToSnakeCase } from 'utils/string';
 const token = document.querySelector('meta[name="csrf-token"]').content;
 
 export const REQUEST_METHODS = {
@@ -25,7 +24,7 @@ const getRequestHeaders = ({ type, body }: IRequestHeaders) => ({
     'X-CSRF-Token': token,
   },
   method: type,
-  body: body ? JSON.stringify(snakeCaseKeys(body)) : null,
+  body: body ? JSON.stringify(body) : null,
 });
 
 function formatQueryString(query?: Query) {
@@ -36,19 +35,13 @@ function formatQueryString(query?: Query) {
   return Object.entries(query).reduce((qs, [key, value]) => {
     if (!value) return qs;
 
-    const snakeCaseKey = camelToSnakeCase(key);
-    const encodedValue = encodeURI(String(value).replace('#', ''));
+    const encodedValue = encodeURI(String(value));
 
-    return qs ? `${qs}&${snakeCaseKey}=${encodedValue}` : `?${snakeCaseKey}=${encodedValue}`;
+    return qs ? `${qs}&${key}=${encodedValue}` : `?${key}=${encodedValue}`;
   }, '');
 }
 
-interface IApiResponse {
-  statusCode: number;
-  message: string;
-}
-
-export async function asyncRequest<IResponse>(
+export async function asyncRequest(
   request: string,
   { type = REQUEST_METHODS.GET, body = null, query = null }: IAsyncRequestOptions = {},
 ) {
@@ -56,7 +49,7 @@ export async function asyncRequest<IResponse>(
   const requestHeaders = getRequestHeaders({ type, body });
   const response = await fetch(`/${request}${queryString}`, requestHeaders);
 
-  const parsedResponse = camelCaseKeys<IResponse & IApiResponse>(await response.json());
+  const parsedResponse = await response.json();
 
   if (parsedResponse.statusCode >= 400) {
     throw new Error(`Network Error: Status ${parsedResponse.statusCode} ${parsedResponse.message}`);

@@ -1,11 +1,15 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore as defaultConfigureStore } from '@reduxjs/toolkit';
 
-import rootReducer from 'redux/reducers.root';
+import rootReducer from 'redux/slice/root.slice';
+import createReduxMiddleware from 'redux/middleware/persistState';
 
-const store = configureStore({
-  reducer: rootReducer,
-});
+const configureStore = (preloadedState, updateState) =>
+  defaultConfigureStore({
+    reducer: rootReducer,
+    preloadedState: preloadedState || {},
+    middleware: createReduxMiddleware(updateState, preloadedState),
+  });
 
 export type IRootState = ReturnType<typeof rootReducer>;
 
-export default store;
+export default configureStore;

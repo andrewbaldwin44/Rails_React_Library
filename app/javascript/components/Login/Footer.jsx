@@ -1,26 +1,16 @@
-import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import GoogleIcon from '../../assets/images/google-icon.svg';
 
-import { AuthenticationContext } from '../AuthenticationContext';
-
-function Footer({ accountCreated, successRedirect, sendErrorCode }) {
-  const { signInWithGoogle, resetUserData } = useContext(AuthenticationContext);
-
-  const googleLogin = () => {
-    resetUserData();
-    signInWithGoogle().then(successRedirect).catch(sendErrorCode);
-  };
-
+function Footer({ accountCreated, signInWithGoogle }) {
   return (
     <Wrapper>
       <Seperator>
         <span>OR</span>
       </Seperator>
 
-      <GoogleButton className='auth-button' onClick={googleLogin}>
+      <GoogleButton className='auth-button' onClick={signInWithGoogle}>
         <img src={GoogleIcon} alt='Google' />
         <span>Continue with Google</span>
       </GoogleButton>

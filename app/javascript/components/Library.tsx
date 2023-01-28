@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import Header from 'components/Header/Index';
-import { SHELVES } from '../constants';
+import { SHELVES } from 'auth/constants';
 import Shelf from 'components/Shelf';
 
 function Library() {

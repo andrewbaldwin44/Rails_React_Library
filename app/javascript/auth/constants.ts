@@ -7,6 +7,7 @@ export const PASSWORD_REQUIREMENTS = {
 };
 
 export const AUTHENTICATION_ERROR_MESSAGES = {
+  userNotFound: "This email doesn't belong to an active account",
   invalidEmail: 'Email is invalid',
   wrongPassword: 'Password is incorrect',
   emailInUse: 'Email in use',
