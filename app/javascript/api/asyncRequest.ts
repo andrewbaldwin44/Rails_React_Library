@@ -1,4 +1,4 @@
-const token = document.querySelector('meta[name="csrf-token"]').content;
+const token = (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement).content;
 
 export const REQUEST_METHODS = {
   GET: 'GET',

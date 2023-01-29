@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
-export default function Autocomplete({ items }) {
+export default function Autocomplete<Item>({ items }: { items?: Item[] }) {
   return (
     <Wrapper>
       {items &&
         items.length &&
-        items.map(({ id, authors, categories, title, imageLinks }) => (
+        items.map(({ id, authors, title, imageLinks }) => (
           <Item key={id}>
             {imageLinks && <img src={imageLinks.smallThumbnail} alt={title} />}
             <div>

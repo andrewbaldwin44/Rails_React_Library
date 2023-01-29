@@ -1,24 +1,25 @@
 import { useState, useEffect, useCallback } from 'react';
 
-function useAsync(
-  asyncFunction: (args?: any) => Promise<any>,
-  { execute: shouldExecuteImmediately = false } = {},
-) {
+function useAsync<
+  AsyncFunction extends (...args: any) => any = () => Promise<void>,
+  AsyncFunctionReturn = void,
+  AsyncFunctionError = ReturnType<typeof Error>,
+>(asyncFunction: AsyncFunction, { execute: shouldExecuteImmediately = false } = {}) {
   const [isLoading, setIsLoading] = useState(true);
-  const [value, setValue] = useState(null);
-  const [error, setError] = useState(null);
+  const [value, setValue] = useState<AsyncFunctionReturn | null>(null);
+  const [error, setError] = useState<AsyncFunctionError | null>(null);
 
   const execute = useCallback(
-    (...args) => {
+    (...args: Parameters<AsyncFunction> | []) => {
       setValue(null);
       setError(null);
 
       return asyncFunction(...args)
-        .then(response => {
+        .then((response: AsyncFunctionReturn) => {
           setValue(response);
           setIsLoading(false);
         })
-        .catch(error => {
+        .catch((error: AsyncFunctionError) => {
           setError(error);
           setIsLoading(false);
         });

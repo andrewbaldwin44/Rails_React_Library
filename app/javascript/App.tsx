@@ -8,7 +8,7 @@ import Routes from 'routes/Index';
 import GlobalStyles from 'components/GlobalStyles';
 
 function App() {
-  const [preloadedState, updateState] = usePersistentState();
+  const { preloadedState, updateState } = usePersistentState();
 
   const store = useMemo(() => configureStore(preloadedState, updateState), []);
 

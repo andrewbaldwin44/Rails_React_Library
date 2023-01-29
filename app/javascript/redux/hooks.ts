@@ -4,18 +4,23 @@ import {
   useDispatch as useReduxDispatch,
   useSelector as useReduxSelector,
 } from 'react-redux';
-import { Dispatch, ActionCreatorWithPayload } from '@reduxjs/toolkit';
+import {
+  ActionCreatorWithoutPayload,
+  ActionCreator,
+  ActionCreatorWithPayload,
+  Dispatch,
+} from '@reduxjs/toolkit';
 
-import { IRootState } from 'redux/store';
+import type { IRootState, Action } from 'redux/store';
 
 export const useSelector: TypedUseSelectorHook<IRootState> = useReduxSelector;
 export const useDispatch: () => Dispatch = useReduxDispatch;
 
-export function useAction(action: ActionCreatorWithPayload<IRootState>) {
+export function useAction(action: ActionCreator<Action>) {
   const dispatch = useDispatch();
 
   return useCallback(
-    payload => {
+    (payload?: Action['payload'] | void) => {
       dispatch(action(payload));
     },
     [action, dispatch],

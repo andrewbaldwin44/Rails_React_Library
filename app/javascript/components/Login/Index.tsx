@@ -7,9 +7,13 @@ import Footer from './Footer';
 
 import { PASSWORD_REQUIREMENTS, AUTHENTICATION_ERROR_MESSAGES } from 'auth/constants';
 import { isStrongPassword } from 'auth/utils';
-import useAuth from 'auth/useAuth';
+import useAuth, { IAuthCallbackProps } from 'auth/useAuth';
 
-function Login({ accountCreated }) {
+interface ILogin {
+  isAccountCreated?: boolean;
+}
+
+function Login({ isAccountCreated = false }: ILogin) {
   const {
     userData,
     createUserWithEmail,
@@ -27,9 +31,9 @@ function Login({ accountCreated }) {
     }
   }, [userData]);
 
-  const userSignup = ({ email, password }) => {
+  const userSignup = ({ email, password }: IAuthCallbackProps) => {
     if (isStrongPassword(password)) {
-      createUserWithEmail(email, password);
+      createUserWithEmail({ email, password });
     } else if (password.length < PASSWORD_REQUIREMENTS.minimumPasswordLength) {
       setErrorMessage(AUTHENTICATION_ERROR_MESSAGES.passwordTooShort);
     } else {
@@ -37,41 +41,45 @@ function Login({ accountCreated }) {
     }
   };
 
-  const userLogin = ({ email, password }) => {
-    signInWithEmail(email, password);
+  const userLogin = ({ email, password }: IAuthCallbackProps) => {
+    signInWithEmail({ email, password });
   };
 
-  const submitForm = event => {
+  const submitForm = (event: React.FormEvent) => {
     event.preventDefault();
 
-    const formData = new FormData(event.target);
-    const inputData = {};
+    const formData = new FormData(event.target as HTMLFormElement);
+    const inputData: { [key: string]: any } = {};
 
+    // @ts-ignore
     for (const [name, value] of formData) {
       if (value) {
         inputData[name] = value;
       }
     }
 
-    if (accountCreated) userLogin(inputData);
-    else userSignup(inputData);
+    if (isAccountCreated) {
+      userLogin(inputData as IAuthCallbackProps);
+    } else {
+      userSignup(inputData as IAuthCallbackProps);
+    }
   };
 
   return (
     <Wrapper>
       <Container>
-        <PageLabel>{accountCreated ? 'Log In' : 'Sign Up'}</PageLabel>
+        <PageLabel>{isAccountCreated ? 'Log In' : 'Sign Up'}</PageLabel>
         <StyledForm onSubmit={submitForm}>
           <TextField type='email' label='Email' name='email' variant='outlined' required />
           <TextField type='password' label='Password' name='password' variant='outlined' required />
-          <SubmitButton type='submit'>{accountCreated ? 'Log In' : 'Sign Up'}</SubmitButton>
+          <SubmitButton type='submit'>{isAccountCreated ? 'Log In' : 'Sign Up'}</SubmitButton>
           {errorMessage && (
             <ErrorMessage>
               <span>{errorMessage}</span>
             </ErrorMessage>
           )}
         </StyledForm>
-        <Footer accountCreated={accountCreated} signInWithGoogle={signInWithGoogle} />
+        <Footer isAccountCreated={isAccountCreated} signInWithGoogle={signInWithGoogle} />
       </Container>
     </Wrapper>
   );

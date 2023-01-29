@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 import { RiAddFill } from 'react-icons/ri';
 
-function BookAdd({ setOpenMenu }) {
+interface IBookAdd {
+  setOpenMenu: (isMenuOpen: boolean) => void;
+}
+
+function BookAdd({ setOpenMenu }: IBookAdd) {
   return (
     <Wrapper onClick={() => setOpenMenu(true)}>
       <RiAddFill className='menu-item' />

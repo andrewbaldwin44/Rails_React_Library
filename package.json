@@ -7,7 +7,8 @@
   "scripts": {
     "start": "bin/webpack-dev-server",
     "format": "prettier --write 'app/javascript/**/*.{js,jsx}'",
-    "lint": "eslint 'app/javascript/**/*.{js,jsx}'"
+    "lint": "eslint 'app/javascript/**/*.{js,jsx}'",
+    "type-check": "tsc"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",

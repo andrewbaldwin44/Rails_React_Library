@@ -1,9 +1,14 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import GoogleIcon from '../../assets/images/google-icon.svg';
+import GoogleIcon from 'assets/images/google-icon.svg';
 
-function Footer({ accountCreated, signInWithGoogle }) {
+interface IFooter {
+  isAccountCreated: boolean;
+  signInWithGoogle: () => void;
+}
+
+function Footer({ isAccountCreated, signInWithGoogle }: IFooter) {
   return (
     <Wrapper>
       <Seperator>
@@ -14,7 +19,7 @@ function Footer({ accountCreated, signInWithGoogle }) {
         <img src={GoogleIcon} alt='Google' />
         <span>Continue with Google</span>
       </GoogleButton>
-      {accountCreated ? (
+      {isAccountCreated ? (
         <div className='auth-button'>
           <span>{'New here? '}</span>
           <StyledLink to='/sign_up'>Create an Account</StyledLink>

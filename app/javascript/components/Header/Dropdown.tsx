@@ -3,7 +3,6 @@ import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAuth from 'auth/useAuth';
-import { useSelector } from 'redux/hooks';
 
 function Dropdown() {
   const {
@@ -12,7 +11,7 @@ function Dropdown() {
   } = useAuth();
 
   const [dropdownState, setDropdownState] = useState(false);
-  const dropdownButton = createRef();
+  const dropdownButton = createRef<HTMLImageElement>();
 
   const history = useHistory();
 
@@ -24,7 +23,7 @@ function Dropdown() {
   const toggleDropdown = () => setDropdownState(!dropdownState);
 
   useEffect(() => {
-    window.onclick = event => {
+    window.onclick = () => {
       if (dropdownButton.current) setDropdownState(false);
     };
   });
@@ -32,16 +31,18 @@ function Dropdown() {
   return (
     <Wrapper>
       <button onClick={toggleDropdown}>
-        <ProfileImage src={avatar} alt='Profile Image' ref={dropdownButton} />
+        <ProfileImage src={avatar || ''} alt='Profile Image' ref={dropdownButton} />
       </button>
-      <DropdownMenu dropdownState={dropdownState}>
-        <h4>{username}</h4>
-        <Seperator />
-        <Link to='users/profile'>View Profile</Link>
-        <button type='button' onClick={signOutRedirect}>
-          Sign Out
-        </button>
-      </DropdownMenu>
+      {dropdownState && (
+        <DropdownMenu>
+          <h4>{username}</h4>
+          <Seperator />
+          <Link to='users/profile'>View Profile</Link>
+          <button type='button' onClick={signOutRedirect}>
+            Sign Out
+          </button>
+        </DropdownMenu>
+      )}
     </Wrapper>
   );
 }
@@ -57,7 +58,7 @@ const Wrapper = styled.div`
 `;
 
 const DropdownMenu = styled.div`
-  display: ${({ dropdownState }) => (dropdownState ? 'flex' : 'none')};
+  display: flex;
   flex-direction: column;
   position: absolute;
   right: 0;

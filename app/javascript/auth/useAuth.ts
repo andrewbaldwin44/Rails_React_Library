@@ -8,15 +8,37 @@ import { handleFirebaseAuthError } from 'auth/utils';
 import DefaultProfile from 'assets/images/default_avatar.jpg';
 import { asyncRequest, REQUEST_METHODS } from 'api/asyncRequest';
 
+export interface IAuthCallbackProps {
+  email: string;
+  password: string;
+}
+
+type AuthCallback = (authCallbackProps: IAuthCallbackProps) => Promise<void>;
+type AuthError = {
+  code: string;
+};
+
+interface IAuthUser {
+  email: string;
+  photoURL: string;
+  displayName: string;
+  uid: string;
+}
+
 export default function useAuth() {
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | undefined>('');
   const setUser = useAction(userActions.setUser);
   const clearUser = useAction(userActions.clearUser);
 
   const userData = useSelector(({ user }) => user);
 
   const getAuthenticatedUser = () => {
-    const { email, photoURL: profilePicture, displayName, uid: userID } = auth.currentUser.toJSON();
+    const {
+      email,
+      photoURL: profilePicture,
+      displayName,
+      uid: userID,
+    } = (auth.currentUser as unknown as { toJSON: () => IAuthUser }).toJSON();
     return {
       userID,
       email,
@@ -25,19 +47,20 @@ export default function useAuth() {
     };
   };
 
-  const { execute: createUserWithEmail, error: createUserError } = useAsync(
-    async (email: string, password: string) => {
-      await auth.createUserWithEmailAndPassword(email, password);
+  const { execute: createUserWithEmail, error: createUserError } = useAsync<
+    AuthCallback,
+    void,
+    AuthError
+  >(async ({ email, password }) => {
+    await auth.createUserWithEmailAndPassword(email, password);
 
-      const user = getAuthenticatedUser();
-      console.log({ user, email, password });
-      await asyncRequest('users/create', { type: REQUEST_METHODS.POST, body: user });
+    const user = getAuthenticatedUser();
+    await asyncRequest('users/create', { type: REQUEST_METHODS.POST, body: user });
 
-      setUser(user);
-    },
-  );
-  const { execute: signInWithEmail, error: signInError } = useAsync(
-    async (email: string, password: string) => {
+    setUser(user);
+  });
+  const { execute: signInWithEmail, error: signInError } = useAsync<AuthCallback, void, AuthError>(
+    async ({ email, password }) => {
       await auth.signInWithEmailAndPassword(email, password);
       setUser(getAuthenticatedUser());
     },
@@ -54,7 +77,9 @@ export default function useAuth() {
 
   useEffect(() => {
     if (createUserError || signInError || googleSignInError) {
-      setErrorMessage(handleFirebaseAuthError(createUserError || signInError || googleSignInError));
+      setErrorMessage(
+        handleFirebaseAuthError((createUserError || signInError || googleSignInError) as AuthError),
+      );
     }
   }, []);
 

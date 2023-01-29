@@ -5,26 +5,30 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { BsBook } from 'react-icons/bs';
 import { FaBookOpen } from 'react-icons/fa';
+import type { IBookData, IBookMenuProps } from 'components/BookMenu/types';
 
 import Autocomplete from 'components/BookMenu/Autocomplete';
 
-interface IBookMenu {
-  openMenu: () => void;
+interface IBookMenu extends IBookMenuProps {
   onBookSearch: (search: string) => void;
-  bookData: any;
+  bookData?: IBookData[];
 }
 
 function BookMenu({ openMenu, onBookSearch, bookData }: IBookMenu) {
-  const menuOverlay = createRef();
-  const bookForm = createRef();
+  const menuOverlay = createRef<HTMLDivElement>();
+  const bookForm = createRef<HTMLFormElement>();
 
-  const submitBook = event => {
+  const submitBook = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   };
 
   const closeMenu = () => {
     const menuElement = menuOverlay.current;
     const formElement = bookForm.current;
+
+    if (!menuElement || !formElement) {
+      return;
+    }
 
     menuElement.classList.add('fadeOut');
     formElement.classList.add('fadeOut');
@@ -40,20 +44,19 @@ function BookMenu({ openMenu, onBookSearch, bookData }: IBookMenu) {
     );
   };
 
-  const isMenuOpen = () => menuOverlay.current.style.display !== 'none';
+  const isMenuOpen = () => menuOverlay.current?.style.display !== 'none';
 
   const toggleMenu = () => {
     const menuElement = menuOverlay.current;
 
-    if (openMenu) {
+    if (openMenu && menuElement) {
       menuElement.style.display = 'flex';
     } else if (isMenuOpen()) {
       closeMenu();
     }
   };
 
-  const handleBookSearch = event => {
-    console.log({ b: event.target.value });
+  const handleBookSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     onBookSearch(event.target.value);
   };
 
@@ -61,11 +64,11 @@ function BookMenu({ openMenu, onBookSearch, bookData }: IBookMenu) {
 
   return (
     <Wrapper className='menu-overlay' ref={menuOverlay} style={{ display: 'none' }}>
-      <Form autocomplete='off' onSubmit={submitBook} ref={bookForm}>
+      <Form autoComplete='off' onSubmit={submitBook} ref={bookForm}>
         <fieldset className='autocomplete-input'>
           <label htmlFor='title'>Title</label>
           <input name='title' id='title' onInput={handleBookSearch} autoComplete='off' />
-          <Autocomplete items={bookData} />
+          <Autocomplete<IBookData> items={bookData} />
         </fieldset>
 
         <fieldset>

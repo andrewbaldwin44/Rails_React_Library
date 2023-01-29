@@ -1,11 +1,15 @@
 import useStorage from 'hooks/useStorage';
+import { IRootState } from 'redux/store';
 
 export default function usePersistentState() {
-  const [state, setState] = useStorage('state', null);
+  const { storedValue: preloadedState, setStoredValue: setState } = useStorage<IRootState | null>(
+    'state',
+    null,
+  );
 
-  const onUpdateState = (updatedState: any) => {
+  const updateState = (updatedState: IRootState) => {
     setState(updatedState);
   };
 
-  return [state, onUpdateState];
+  return { preloadedState, updateState };
 }

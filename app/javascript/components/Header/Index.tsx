@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-import BookAdd from './BookAdd';
-import Dropdown from './Dropdown';
-import BookMenu from '../BookMenu/BookMenuContainer';
+import BookAdd from 'components/Header/BookAdd';
+import Dropdown from 'components/Header/Dropdown';
+import BookMenu from 'components/BookMenu/BookMenuContainer';
 
 function Header() {
   const [openMenu, setOpenMenu] = useState(false);
 
-  const isMenuOverlay = element => element.classList.contains('menu-overlay');
+  const isMenuOverlay = (element: HTMLElement) => element.classList.contains('menu-overlay');
 
   const handleMenuClose = () => {
     window.onclick = ({ target }) => {
-      if (isMenuOverlay(target)) setOpenMenu(false);
+      if (isMenuOverlay(target as HTMLElement)) setOpenMenu(false);
     };
   };
 
