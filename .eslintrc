@@ -25,6 +25,7 @@
     "indent": "off",
     "no-tabs": "off",
     "jsx-quotes": "off",
+    "no-restricted-syntax": "off",
     "react/prop-types": "off",
     "import/extensions": "off",
     "operator-linebreak": 0,
@@ -41,6 +42,7 @@
     "react/jsx-filename-extension": "off",
     "react/jsx-props-no-spreading": "off",
     "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
     "jsx-a11y/label-has-associated-control": "off"
   }
 }
