@@ -19,8 +19,8 @@ function useAsync<
           setValue(response);
           setIsLoading(false);
         })
-        .catch((error: AsyncFunctionError) => {
-          setError(error);
+        .catch((newError: AsyncFunctionError) => {
+          setError(newError);
           setIsLoading(false);
         });
     },

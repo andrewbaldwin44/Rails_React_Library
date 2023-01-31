@@ -10,7 +10,7 @@ export function handleFirebaseAuthError({ code }: { code: string }) {
       return AUTHENTICATION_ERROR_MESSAGES.emailInUse;
     case 'auth/cancelled-popup-request':
     case 'auth/popup-closed-by-user':
-      return;
+      return '';
     default:
       return AUTHENTICATION_ERROR_MESSAGES.defaultMessage;
   }

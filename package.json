@@ -6,8 +6,8 @@
   "license": "MIT",
   "scripts": {
     "start": "bin/webpack-dev-server",
-    "format": "prettier --write 'app/javascript/**/*.{js,jsx}'",
-    "lint": "eslint 'app/javascript/**/*.{js,jsx}'",
+    "format": "prettier --write 'app/javascript/**/*.{ts,tsx}'",
+    "lint": "eslint 'app/javascript/**/*.{ts,tsx}'",
     "type-check": "tsc"
   },
   "dependencies": {

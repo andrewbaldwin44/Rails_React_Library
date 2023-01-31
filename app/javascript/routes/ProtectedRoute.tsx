@@ -9,23 +9,23 @@ interface IProtectedRoute {
 }
 
 function ProtectedRoute({ component: Component, ...rest }: IProtectedRoute) {
-  const user = useSelector(({ user }) => user);
+  const user = useSelector(({ user: { email } }) => email);
 
   const getRouteComponent = (props: RouteComponentProps) => {
-    if (user.email) {
+    if (user) {
       return <Component {...props} />;
-    } else {
-      return (
-        <Redirect
-          to={{
-            pathname: '/login',
-            state: {
-              from: props.location,
-            },
-          }}
-        />
-      );
     }
+
+    return (
+      <Redirect
+        to={{
+          pathname: '/login',
+          state: {
+            from: props.location,
+          },
+        }}
+      />
+    );
   };
 
   return <Route {...rest} render={getRouteComponent} />;

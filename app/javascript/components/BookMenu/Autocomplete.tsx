@@ -10,7 +10,7 @@ export default function Autocomplete<Item>({ items }: { items?: Item[] }) {
             {imageLinks && <img src={imageLinks.smallThumbnail} alt={title} />}
             <div>
               <span>{title}</span>
-              <span className='author'>By {authors}</span>
+              <span className='author'>{`By ${authors}`}</span>
             </div>
           </Item>
         ))}

@@ -14,10 +14,6 @@ function Shelf({ title, className }: IShelf) {
   );
 }
 
-Shelf.defaultProps = {
-  className: '',
-};
-
 const Wrapper = styled.div`
   margin: 0 auto 120px auto;
   width: 100vw;

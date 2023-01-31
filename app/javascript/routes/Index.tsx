@@ -12,7 +12,7 @@ export default (
     <Switch>
       <Route path='/' exact component={Home} />
       <Route path='/login' exact>
-        <Login isAccountCreated={true} />
+        <Login isAccountCreated />
       </Route>
       <Route path='/sign_up' exact component={Login} />
       <ProtectedRoute path='/library' exact component={Library} />

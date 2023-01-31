@@ -6,7 +6,7 @@ import useAuth from 'auth/useAuth';
 
 function Dropdown() {
   const {
-    userData: { email, username, avatar },
+    userData: { username, avatar },
     signOut,
   } = useAuth();
 
@@ -38,9 +38,7 @@ function Dropdown() {
           <h4>{username}</h4>
           <Seperator />
           <Link to='users/profile'>View Profile</Link>
-          <button type='button' onClick={signOutRedirect}>
-            Sign Out
-          </button>
+          <button onClick={signOutRedirect}>Sign Out</button>
         </DropdownMenu>
       )}
     </Wrapper>

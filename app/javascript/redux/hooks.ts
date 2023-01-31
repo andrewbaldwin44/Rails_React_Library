@@ -4,12 +4,7 @@ import {
   useDispatch as useReduxDispatch,
   useSelector as useReduxSelector,
 } from 'react-redux';
-import {
-  ActionCreatorWithoutPayload,
-  ActionCreator,
-  ActionCreatorWithPayload,
-  Dispatch,
-} from '@reduxjs/toolkit';
+import { ActionCreator, Dispatch } from '@reduxjs/toolkit';
 
 import type { IRootState, Action } from 'redux/store';
 

@@ -3,6 +3,7 @@ import 'firebase/auth';
 
 import { firebaseConfig } from 'auth/config';
 
+// eslint-disable-next-line no-unused-expressions
 !firebase.apps.length && firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();

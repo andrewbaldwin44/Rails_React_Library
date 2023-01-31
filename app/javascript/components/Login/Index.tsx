@@ -3,17 +3,16 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 
-import Footer from './Footer';
-
 import { PASSWORD_REQUIREMENTS, AUTHENTICATION_ERROR_MESSAGES } from 'auth/constants';
 import { isStrongPassword } from 'auth/utils';
 import useAuth, { IAuthCallbackProps } from 'auth/useAuth';
+import Footer from 'components/Login/Footer';
 
 interface ILogin {
   isAccountCreated?: boolean;
 }
 
-function Login({ isAccountCreated = false }: ILogin) {
+export default function Login({ isAccountCreated = false }: ILogin) {
   const {
     userData,
     createUserWithEmail,
@@ -149,5 +148,3 @@ const ErrorMessage = styled.div`
   color: #f13240;
   padding: 20px 10px;
 `;
-
-export default Login;
