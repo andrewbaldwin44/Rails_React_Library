@@ -3,16 +3,47 @@ import styled from 'styled-components';
 interface IShelf {
   title: string;
   className: string;
+  id: string;
 }
 
-function Shelf({ title, className }: IShelf) {
+export default function Shelf({ title, className, id }: IShelf) {
+  const onDrop = e => {
+    e.preventDefault();
+    const data = e.dataTransfer.getData('text');
+    e.target.appendChild(document.getElementById(data));
+  };
+
+  const onBookDrop = e => e.stopPropagation();
+
+  const allowDrop = e => {
+    e.preventDefault();
+  };
+
+  const onDrag = e => {
+    e.dataTransfer.setData('text', e.target.id);
+  };
+
   return (
     <Wrapper className={className}>
       <h2>{title}</h2>
-      <Container />
+      <Container onDrop={onDrop} onDragOver={allowDrop}>
+        <Book id={id} draggable={true} onDragStart={onDrag} onDrop={onBookDrop}></Book>
+      </Container>
     </Wrapper>
   );
 }
+
+const Book = styled.div`
+  height: 200px;
+  width: 100px;
+  background-color: pink;
+  cursor: grab;
+
+  &:active {
+    border: 1px solid lightgreen;
+    background-color: purple;
+  }
+`;
 
 const Wrapper = styled.div`
   margin: 0 auto 120px auto;
@@ -44,6 +75,6 @@ const Wrapper = styled.div`
 const Container = styled.div`
   height: 250px;
   background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  column-gap: 16px;
 `;
-
-export default Shelf;
