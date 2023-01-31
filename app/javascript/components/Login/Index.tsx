@@ -7,6 +7,7 @@ import { PASSWORD_REQUIREMENTS, AUTHENTICATION_ERROR_MESSAGES } from 'auth/const
 import { isStrongPassword } from 'auth/utils';
 import useAuth, { IAuthCallbackProps } from 'auth/useAuth';
 import Footer from 'components/Login/Footer';
+import Form from 'components/Form/Form';
 
 interface ILogin {
   isAccountCreated?: boolean;
@@ -44,23 +45,11 @@ export default function Login({ isAccountCreated = false }: ILogin) {
     signInWithEmail({ email, password });
   };
 
-  const submitForm = (event: React.FormEvent) => {
-    event.preventDefault();
-
-    const formData = new FormData(event.target as HTMLFormElement);
-    const inputData: { [key: string]: any } = {};
-
-    // @ts-ignore
-    for (const [name, value] of formData) {
-      if (value) {
-        inputData[name] = value;
-      }
-    }
-
+  const submitForm = (authCallbackProps: IAuthCallbackProps) => {
     if (isAccountCreated) {
-      userLogin(inputData as IAuthCallbackProps);
+      userLogin(authCallbackProps);
     } else {
-      userSignup(inputData as IAuthCallbackProps);
+      userSignup(authCallbackProps);
     }
   };
 
@@ -112,7 +101,7 @@ const PageLabel = styled.h2`
   text-shadow: 1px 1px 5px black;
 `;
 
-const StyledForm = styled.form`
+const StyledForm = styled(Form<IAuthCallbackProps>)`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
