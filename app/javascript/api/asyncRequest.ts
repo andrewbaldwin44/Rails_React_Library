@@ -45,15 +45,24 @@ export async function asyncRequest(
   request: string,
   { type = REQUEST_METHODS.GET, body = null, query = null }: IAsyncRequestOptions = {},
 ) {
+  console.log('called');
   const queryString = formatQueryString(query);
   const requestHeaders = getRequestHeaders({ type, body });
+  console.log({ blah: `/${request}${queryString}`, requestHeaders });
   const response = await fetch(`/${request}${queryString}`, requestHeaders);
 
-  const parsedResponse = await response.json();
+  try {
+    const parsedResponse = await response.json();
+    console.log({ parsedResponse }, '------------');
 
-  if (parsedResponse.statusCode >= 400) {
-    throw new Error(`Network Error: Status ${parsedResponse.statusCode} ${parsedResponse.message}`);
+    if (parsedResponse.statusCode >= 400) {
+      throw new Error(
+        `Network Error: Status ${parsedResponse.statusCode} ${parsedResponse.message}`,
+      );
+    }
+
+    return parsedResponse;
+  } catch (e) {
+    console.log(e);
   }
-
-  return parsedResponse;
 }

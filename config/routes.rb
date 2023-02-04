@@ -6,8 +6,12 @@ Rails.application.routes.draw do
   get '/users', to: 'users#index'
   post '/users/create'
 
+
   get '/book_search', to:'books#index'
+  post '/books/create'
+  put '/books/update'
+  delete '/books/destroy'
+
 
   get '/*path' => 'homepage#index'
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

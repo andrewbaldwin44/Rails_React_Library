@@ -1,4 +1,4 @@
-import { useEffect, createRef } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -6,20 +6,104 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { BsBook } from 'react-icons/bs';
 import { FaBookOpen } from 'react-icons/fa';
 import type { IBookData, IBookMenuProps } from 'components/BookMenu/types';
+import Form from 'components/Form/Form';
 
-import Autocomplete from 'components/BookMenu/Autocomplete';
+import Autocomplete from 'components/Autocomplete/Autocomplete';
+import { asyncRequest, REQUEST_METHODS } from 'api/asyncRequest';
+import useAsync from 'hooks/useAsync';
+import { useSelector } from 'redux/hooks';
 
 interface IBookMenu extends IBookMenuProps {
   onBookSearch: (search: string) => void;
   bookData?: IBookData[];
 }
 
-function BookMenu({ openMenu, onBookSearch, bookData }: IBookMenu) {
-  const menuOverlay = createRef<HTMLDivElement>();
-  const bookForm = createRef<HTMLFormElement>();
+interface IBookSuggestion extends IBookData {
+  updateNewBooks: (newBook: IBookData) => void;
+  onCloseAutocomplete: () => void;
+  isHighlightedSuggestion: boolean;
+  onMouseOver: () => void;
+}
 
-  const submitBook = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+function BookSuggestion({
+  updateNewBooks,
+  onMouseOver,
+  isHighlightedSuggestion,
+  ...bookData
+}: IBookSuggestion) {
+  const { authors, title, imageLinks } = bookData;
+
+  const onBookSuggestionClick = () => {
+    updateNewBooks(bookData);
+  };
+
+  return (
+    <Item
+      onMouseOver={onMouseOver}
+      isHighlightedSuggestion={isHighlightedSuggestion}
+      onClick={onBookSuggestionClick}
+    >
+      {imageLinks && <img src={imageLinks.smallThumbnail} alt={title} />}
+      <div>
+        <span>{title}</span>
+        <span className='author'>{`By ${authors}`}</span>
+      </div>
+    </Item>
+  );
+}
+
+function BookToAdd({ authors, title, imageLinks }: IBookData) {
+  return (
+    <Item>
+      {imageLinks && <img src={imageLinks.smallThumbnail} alt={title} />}
+      <div>
+        <span>{title}</span>
+        <span className='author'>{`By ${authors}`}</span>
+      </div>
+      <fieldset className='centered-field'>
+        <ReadBook
+          control={
+            <Checkbox
+              icon={<BsBook />}
+              checkedIcon={<FaBookOpen className='checked' />}
+              name='read-book'
+            />
+          }
+          label='Read'
+        />
+      </fieldset>
+    </Item>
+  );
+}
+
+function BookMenu({ openMenu, onBookSearch, bookData }: IBookMenu) {
+  const menuOverlay = useRef<HTMLDivElement>();
+  const bookForm = useRef<HTMLFormElement>();
+  const bookSearchInputRef = useRef<HTMLInputElement>();
+  const [newBooks, setNewBooks] = useState<IBookData[]>([]);
+  const userID = useSelector(({ user }) => user.userID);
+
+  const { execute: onBookAdd, value: booksResponse } = useAsync(() =>
+    asyncRequest('books/create', {
+      body: { books: newBooks.map(({ id }) => ({ id, user: userID, shelf: 'deck' })) },
+      type: REQUEST_METHODS.POST,
+    }),
+  );
+
+  useEffect(() => {
+    console.log({ booksResponse });
+  }, [booksResponse]);
+
+  const updateNewBooks = useCallback(
+    (newBook: IBookData) => {
+      setNewBooks([...newBooks, newBook]);
+    },
+    [newBooks],
+  );
+
+  const submitBook = () => {
+    console.log('submitted!');
+    onBookAdd();
   };
 
   const closeMenu = () => {
@@ -56,48 +140,42 @@ function BookMenu({ openMenu, onBookSearch, bookData }: IBookMenu) {
     }
   };
 
-  const handleBookSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onBookSearch(event.target.value);
-  };
+  const handleBookSearch = useCallback((searchValue: string) => {
+    onBookSearch(searchValue);
+  }, []);
 
   useEffect(toggleMenu, [openMenu]);
 
   return (
     <Wrapper className='menu-overlay' ref={menuOverlay} style={{ display: 'none' }}>
-      <Form autoComplete='off' onSubmit={submitBook} ref={bookForm}>
+      <StyledForm autoComplete='off' onSubmit={submitBook} ref={bookForm}>
         <fieldset className='autocomplete-input'>
           <label htmlFor='title'>Title</label>
-          <input name='title' id='title' onInput={handleBookSearch} autoComplete='off' />
-          <Autocomplete<IBookData> items={bookData} />
+          <AutocompleteWrapper>
+            <input
+              ref={bookSearchInputRef}
+              name='title'
+              id='title'
+              onInput={handleBookSearch}
+              autoComplete='off'
+            />
+            <Autocomplete<IBookData>
+              results={bookData}
+              inputRef={bookSearchInputRef}
+              callback={handleBookSearch}
+            >
+              <BookSuggestion updateNewBooks={updateNewBooks} />
+            </Autocomplete>
+          </AutocompleteWrapper>
         </fieldset>
-
-        <fieldset>
-          <label htmlFor='author'>Author</label>
-          <input name='author' id='author' />
-        </fieldset>
-
-        <fieldset>
-          <label htmlFor='genre'>Genre</label>
-          <input name='genre' id='genre' />
-        </fieldset>
-
-        <fieldset className='centered-field'>
-          <ReadBook
-            control={
-              <Checkbox
-                icon={<BsBook />}
-                checkedIcon={<FaBookOpen className='checked' />}
-                name='read-book'
-              />
-            }
-            label='Read'
-          />
-        </fieldset>
+        {newBooks.map(book => (
+          <BookToAdd {...book} />
+        ))}
 
         <fieldset className='centered-field'>
           <Shelve type='submit'>Shelve</Shelve>
         </fieldset>
-      </Form>
+      </StyledForm>
     </Wrapper>
   );
 }
@@ -153,7 +231,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const Form = styled.form`
+const StyledForm = styled(Form)`
   position: relative;
   background-color: #28231d;
   border-radius: 5px;
@@ -239,6 +317,34 @@ const Shelve = styled.button`
     border-color: var(--light-green);
     box-shadow: 0 0 5px 1px #69f0ae;
   }
+`;
+
+const AutocompleteWrapper = styled.div`
+  position: relative;
+`;
+
+const Item = styled.li<{ isHighlightedSuggestion: boolean }>`
+  display: flex;
+  padding: 20px 20px;
+  line-height: 1.5;
+  cursor: pointer;
+
+  img {
+    height: 60px;
+    width: 50px;
+    margin-right: 20px;
+  }
+
+  span {
+    display: block;
+
+    &.author {
+      font-style: italic;
+    }
+  }
+
+  ${({ isHighlightedSuggestion }) =>
+    isHighlightedSuggestion ? 'background-color:  #a8cff4' : 'color: black'};
 `;
 
 export default BookMenu;
