@@ -3,7 +3,7 @@ class UsersController < ApplicationController
     if user_exists
       render json: user
     else
-      new_user = User.create!(user_params)
+      new_user = User.create(user_params)
 
       if new_user
         render json: new_user
@@ -26,7 +26,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.permit(:email, :username, :avatar, :userID)
+    params.permit(:email, :username, :avatar, :user_id)
   end
 
   def user

@@ -45,15 +45,12 @@ export async function asyncRequest(
   request: string,
   { type = REQUEST_METHODS.GET, body = null, query = null }: IAsyncRequestOptions = {},
 ) {
-  console.log('called');
   const queryString = formatQueryString(query);
   const requestHeaders = getRequestHeaders({ type, body });
-  console.log({ blah: `/${request}${queryString}`, requestHeaders });
   const response = await fetch(`/${request}${queryString}`, requestHeaders);
 
   try {
     const parsedResponse = await response.json();
-    console.log({ parsedResponse }, '------------');
 
     if (parsedResponse.statusCode >= 400) {
       throw new Error(

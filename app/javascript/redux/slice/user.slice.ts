@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { updateStateWithPayload } from 'redux/utils';
 
 export interface IUserState {
-  userID: string;
+  user_id: string;
   email: string;
   username: string;
   avatar: string;
@@ -11,7 +11,7 @@ export interface IUserState {
 export type UserAction = PayloadAction<IUserState | undefined>;
 
 const initialState = {
-  userID: '',
+  user_id: '',
   email: '',
   username: '',
   avatar: '',

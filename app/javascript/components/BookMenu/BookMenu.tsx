@@ -81,18 +81,17 @@ function BookMenu({ openMenu, onBookSearch, bookData }: IBookMenu) {
   const bookForm = useRef<HTMLFormElement>();
   const bookSearchInputRef = useRef<HTMLInputElement>();
   const [newBooks, setNewBooks] = useState<IBookData[]>([]);
-  const userID = useSelector(({ user }) => user.userID);
+  const userID = useSelector(({ user }) => user.user_id);
 
   const { execute: onBookAdd, value: booksResponse } = useAsync(() =>
     asyncRequest('books/create', {
-      body: { books: newBooks.map(({ id }) => ({ id, user: userID, shelf: 'deck' })) },
+      body: {
+        books: newBooks.map(({ id }) => ({ book_id: id, shelf: 'deck', user_id: userID })),
+        userID,
+      },
       type: REQUEST_METHODS.POST,
     }),
   );
-
-  useEffect(() => {
-    console.log({ booksResponse });
-  }, [booksResponse]);
 
   const updateNewBooks = useCallback(
     (newBook: IBookData) => {
@@ -102,7 +101,6 @@ function BookMenu({ openMenu, onBookSearch, bookData }: IBookMenu) {
   );
 
   const submitBook = () => {
-    console.log('submitted!');
     onBookAdd();
   };
 

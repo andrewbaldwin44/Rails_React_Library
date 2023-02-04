@@ -1,3 +1,5 @@
+require 'json'
+
 class BooksController < ApplicationController
   # before_action :logged_in, only: [:create]
   # before_action :authorized_book_user, only: [:update, :destroy]
@@ -15,16 +17,18 @@ class BooksController < ApplicationController
   end
 
   def create
-    if books_exist
-      render json: books
-    else
-      new_books = Book.create!(book_params["books"])
+    user = User.find_by_user_id(book_params[:userID])
+
+    unless books_to_create.empty?
+      new_books = user.books.create(books_to_create)
 
       if new_books
         render json: new_books
       else
         render json: new_books.errors
       end
+    else
+      render json: { message: 'No new books to create', status: 200 }
     end
   end
 
@@ -49,18 +53,12 @@ class BooksController < ApplicationController
   end
 
   def book_params
-    params.permit("books", "book", "user", :books, :book)
+    params.require(:userID)
+    params.require(:books)
+    params.permit(:userID, books: [:book_id, :shelf, :user_id])
   end
 
-  def books
-    books_to_add = params["books"].reject { |book| Book.exists?(book["id"]) }.map { |book| book[:id] }
-
-    @books ||= Book.find_all(books_to_add)
-  end
-
-  def books_exist
-    params["books"].all? { |book|
-      Book.exists?(bookID: book["id"])
-    }
+  def books_to_create
+    book_params[:books].reject { |book| Book.exists?(book_id: book[:book_id]) }
   end
 end
