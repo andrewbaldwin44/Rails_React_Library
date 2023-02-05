@@ -37,6 +37,8 @@ export default function Autocomplete<Item>({
     setShouldShowAutofill(true);
   });
 
+  const onClose = useCallback(() => setShouldShowAutofill(false), []);
+
   const handleKeyPress = useCallback(
     ({ key }) => {
       if (!results || !inputRef.current) {
@@ -103,6 +105,7 @@ export default function Autocomplete<Item>({
           ...result,
           isHighlightedSuggestion: index === selectedSuggestionIndex,
           onMouseOver: () => setSelectedSuggestionIndex(index),
+          onClose,
         }),
       )}
     </Wrapper>

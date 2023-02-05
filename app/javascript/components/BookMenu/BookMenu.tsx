@@ -34,11 +34,13 @@ function BookSuggestion({
   updateNewBooks,
   onMouseOver,
   isHighlightedSuggestion,
+  onClose,
   ...bookData
 }: IBookSuggestion) {
   const { authors, title, imageLinks } = bookData;
 
   const onBookSuggestionClick = () => {
+    onClose();
     updateNewBooks(bookData);
   };
 
@@ -59,29 +61,59 @@ function BookSuggestion({
 
 function BookToAdd({ authors, title, imageLinks }: IBookData) {
   return (
-    <Item>
+    <BookToAddWrapper>
       {imageLinks && <img src={imageLinks.smallThumbnail} alt={title} />}
       <div>
         <span>{title}</span>
         <span className='author'>{`By ${authors}`}</span>
       </div>
-      <fieldset className='centered-field'>
-        <ReadBook
-          control={
-            <Checkbox
-              icon={<BsBook />}
-              checkedIcon={<FaBookOpen className='checked' />}
-              name='read-book'
-            />
-          }
-          label='Read'
-        />
-      </fieldset>
-    </Item>
+    </BookToAddWrapper>
   );
 }
 
-function BookMenu({ openMenu, onBookSearch, bookData, userID, addBooksToShelf }: IBookMenu) {
+// <fieldset className='centered-field'>
+//   <ReadBook
+//     control={
+//       <Checkbox
+//         icon={<BsBook />}
+//         checkedIcon={<FaBookOpen className='checked' />}
+//         name='read-book'
+//       />
+//     }
+//     label='Read'
+//   />
+// </fieldset>
+
+const BookToAddWrapper = styled.li`
+  display: flex;
+  padding: 20px 0;
+  line-height: 1.5;
+  max-width: 400px;
+  cursor: pointer;
+
+  img {
+    height: 60px;
+    width: 50px;
+    margin-right: 20px;
+  }
+
+  span {
+    display: block;
+
+    &.author {
+      font-style: italic;
+    }
+  }
+`;
+
+function BookMenu({
+  openMenu,
+  setOpenMenu,
+  onBookSearch,
+  bookData,
+  userID,
+  addBooksToShelf,
+}: IBookMenu) {
   const menuOverlay = useRef<HTMLDivElement>();
   const bookForm = useRef<HTMLFormElement>();
   const bookSearchInputRef = useRef<HTMLInputElement>();
@@ -150,38 +182,49 @@ function BookMenu({ openMenu, onBookSearch, bookData, userID, addBooksToShelf }:
 
   useEffect(toggleMenu, [openMenu]);
 
+  const onClockMenu = () => {
+    console.log({ setOpenMenu });
+    closeMenu();
+    setOpenMenu(false);
+  };
+
   return (
     <Wrapper className='menu-overlay' ref={menuOverlay} style={{ display: 'none' }}>
-      <StyledForm autoComplete='off' onSubmit={submitBook} ref={bookForm}>
-        <fieldset className='autocomplete-input'>
-          <label htmlFor='title'>Title</label>
-          <AutocompleteWrapper>
-            <input
-              ref={bookSearchInputRef}
-              name='title'
-              id='title'
-              onInput={handleBookSearch}
-              autoComplete='off'
-            />
-            <Autocomplete<IBookData>
-              results={bookData}
-              inputRef={bookSearchInputRef}
-              callback={handleBookSearch}
-            >
-              <BookSuggestion updateNewBooks={updateNewBooks} />
-            </Autocomplete>
-          </AutocompleteWrapper>
-        </fieldset>
-        {newBooks.map(book => (
-          <BookToAdd {...book} />
-        ))}
+      <Inner>
+        <CloseButton onClick={onClockMenu}>&#x274c;</CloseButton>
+        <StyledForm autoComplete='off' onSubmit={submitBook} ref={bookForm}>
+          <fieldset className='autocomplete-input'>
+            <label htmlFor='title'>Title</label>
+            <AutocompleteWrapper>
+              <input
+                ref={bookSearchInputRef}
+                name='title'
+                id='title'
+                onInput={handleBookSearch}
+                autoComplete='off'
+              />
+              <Autocomplete<IBookData>
+                results={bookData}
+                inputRef={bookSearchInputRef}
+                callback={handleBookSearch}
+              >
+                <BookSuggestion updateNewBooks={updateNewBooks} />
+              </Autocomplete>
+            </AutocompleteWrapper>
+          </fieldset>
+          <BooksToAddList>
+            {newBooks.map(book => (
+              <BookToAdd {...book} />
+            ))}
+          </BooksToAddList>
 
-        <fieldset className='centered-field'>
-          <Shelve type='submit' disabled={!newBooks.length}>
-            Shelve
-          </Shelve>
-        </fieldset>
-      </StyledForm>
+          <fieldset className='centered-field'>
+            <Shelve type='submit' disabled={!newBooks.length}>
+              Shelve
+            </Shelve>
+          </fieldset>
+        </StyledForm>
+      </Inner>
     </Wrapper>
   );
 }
@@ -247,7 +290,14 @@ const Wrapper = styled.div`
   }
 `;
 
-const StyledForm = styled(Form)`
+const CloseButton = styled.button`
+  position: absolute;
+  color: crimson;
+  top: 20px;
+  right: 20px;
+`;
+
+const Inner = styled.div`
   position: relative;
   background-color: #28231d;
   border-radius: 5px;
@@ -262,6 +312,13 @@ const StyledForm = styled(Form)`
   animation-name: ${formIn};
   animation-duration: 0.4s;
   animation-fill-mode: forwards;
+`;
+
+const StyledForm = styled(Form)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 70%;
 
   fieldset {
     display: flex;
@@ -337,6 +394,10 @@ const Shelve = styled.button`
 
 const AutocompleteWrapper = styled.div`
   position: relative;
+`;
+
+const BooksToAddList = styled.ol`
+  margin: 10px 0;
 `;
 
 const Item = styled.li<{ isHighlightedSuggestion: boolean }>`
