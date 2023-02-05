@@ -37,10 +37,10 @@ export default function useAuth() {
       email,
       photoURL: profilePicture,
       displayName,
-      uid: userID,
+      uid: user_id,
     } = (auth.currentUser as unknown as { toJSON: () => IAuthUser }).toJSON();
     return {
-      userID,
+      user_id,
       email,
       avatar: profilePicture || DefaultProfile,
       username: displayName || email,
@@ -67,7 +67,11 @@ export default function useAuth() {
   );
   const { execute: signInWithGoogle, error: googleSignInError } = useAsync(async () => {
     await auth.signInWithPopup(googleProvider);
-    setUser(getAuthenticatedUser());
+    const user = getAuthenticatedUser();
+
+    await asyncRequest('users/create', { type: REQUEST_METHODS.POST, body: user });
+
+    setUser(user);
   });
 
   const { execute: signOut } = useAsync(async () => {

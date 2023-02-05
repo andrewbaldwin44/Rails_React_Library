@@ -49,11 +49,17 @@ export async function asyncRequest(
   const requestHeaders = getRequestHeaders({ type, body });
   const response = await fetch(`/${request}${queryString}`, requestHeaders);
 
-  const parsedResponse = await response.json();
+  try {
+    const parsedResponse = await response.json();
 
-  if (parsedResponse.statusCode >= 400) {
-    throw new Error(`Network Error: Status ${parsedResponse.statusCode} ${parsedResponse.message}`);
+    if (parsedResponse.statusCode >= 400) {
+      throw new Error(
+        `Network Error: Status ${parsedResponse.statusCode} ${parsedResponse.message}`,
+      );
+    }
+
+    return parsedResponse;
+  } catch (e) {
+    console.log(e);
   }
-
-  return parsedResponse;
 }

@@ -1,14 +1,9 @@
 class UsersController < ApplicationController
-  def index
-    user = User.all.order(created_at: :desc)
-    render json: user
-  end
-
   def create
     if user_exists
       render json: user
     else
-      new_user = User.create!(user_params)
+      new_user = User.create(user_params)
 
       if new_user
         render json: new_user
@@ -18,10 +13,20 @@ class UsersController < ApplicationController
     end
   end
 
+  def update
+    respond_to do |format|
+      if user.update(user_params)
+        render json: user
+      else
+        render json: user.errors
+      end
+    end
+  end
+
   private
 
   def user_params
-    params.permit(:email, :username, :avatar, :userID)
+    params.permit(:email, :username, :avatar, :user_id)
   end
 
   def user

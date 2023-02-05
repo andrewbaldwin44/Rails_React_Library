@@ -2,9 +2,16 @@ interface IForm<FormData> {
   children: React.ReactNode[];
   className?: string;
   onSubmit: (formData: FormData) => void;
+  autoComplete?: 'off' | 'on';
+  ref?: React.Ref<HTMLFormElement>;
 }
 
-export default function Form<FormData>({ children, className, onSubmit }: IForm<FormData>) {
+export default function Form<FormData>({
+  children,
+  className,
+  onSubmit,
+  ...formProps
+}: IForm<FormData>) {
   const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -22,7 +29,7 @@ export default function Form<FormData>({ children, className, onSubmit }: IForm<
   };
 
   return (
-    <form className={className} onSubmit={onFormSubmit}>
+    <form className={className} onSubmit={onFormSubmit} {...formProps}>
       {children}
     </form>
   );
