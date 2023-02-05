@@ -16,10 +16,3 @@ export const AUTHENTICATION_ERROR_MESSAGES = {
     'Password should contain at least one upper case character, number or symbol',
   defaultMessage: 'Email or Password is invalid',
 };
-
-export const SHELVES = [
-  { title: 'Reading', className: 'reading' },
-  { title: 'On Deck' },
-  { title: 'Recently Read' },
-  { title: 'Library' },
-];

@@ -1,20 +1,13 @@
 import styled from 'styled-components';
 
 import Header from 'components/Header/Index';
-import { SHELVES } from 'auth/constants';
-import Shelf from 'components/Shelf';
+import Shelves from 'modules/Shelf/Shelf.container';
 
-function Library() {
+export default function Library() {
   return (
     <Wrapper>
       <Header />
-      {SHELVES.map((shelf, index) => {
-        const { title, className } = shelf;
-
-        return (
-          <Shelf key={`shelf${index}`} id={`shelf${index}`} title={title} className={className} />
-        );
-      })}
+      <Shelves />
     </Wrapper>
   );
 }
@@ -22,5 +15,3 @@ function Library() {
 const Wrapper = styled.div`
   height: 100%;
 `;
-
-export default Library;

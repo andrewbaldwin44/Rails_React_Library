@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 
@@ -11,11 +12,15 @@ import Form from 'components/Form/Form';
 import Autocomplete from 'components/Autocomplete/Autocomplete';
 import { asyncRequest, REQUEST_METHODS } from 'api/asyncRequest';
 import useAsync from 'hooks/useAsync';
-import { useSelector } from 'redux/hooks';
+import { shelfActions } from 'modules/Shelf/shelf.slice';
+import type { IAddBooksToShelf } from 'modules/Shelf/shelf.slice';
+import { SHELF_KEYS } from 'modules/Shelf/shelf.constants';
 
 interface IBookMenu extends IBookMenuProps {
   onBookSearch: (search: string) => void;
   bookData?: IBookData[];
+  userID: string;
+  addBooksToShelf: (payload: IAddBooksToShelf) => void;
 }
 
 interface IBookSuggestion extends IBookData {
@@ -76,14 +81,13 @@ function BookToAdd({ authors, title, imageLinks }: IBookData) {
   );
 }
 
-function BookMenu({ openMenu, onBookSearch, bookData }: IBookMenu) {
+function BookMenu({ openMenu, onBookSearch, bookData, userID, addBooksToShelf }: IBookMenu) {
   const menuOverlay = useRef<HTMLDivElement>();
   const bookForm = useRef<HTMLFormElement>();
   const bookSearchInputRef = useRef<HTMLInputElement>();
   const [newBooks, setNewBooks] = useState<IBookData[]>([]);
-  const userID = useSelector(({ user }) => user.user_id);
 
-  const { execute: onBookAdd, value: booksResponse } = useAsync(() =>
+  const { execute: onBookAdd } = useAsync(() =>
     asyncRequest('books/create', {
       body: {
         books: newBooks.map(({ id }) => ({ book_id: id, shelf: 'deck', user_id: userID })),
@@ -102,6 +106,8 @@ function BookMenu({ openMenu, onBookSearch, bookData }: IBookMenu) {
 
   const submitBook = () => {
     onBookAdd();
+    addBooksToShelf({ shelf: SHELF_KEYS.DECK, books: newBooks });
+    setNewBooks([]);
   };
 
   const closeMenu = () => {
@@ -171,12 +177,24 @@ function BookMenu({ openMenu, onBookSearch, bookData }: IBookMenu) {
         ))}
 
         <fieldset className='centered-field'>
-          <Shelve type='submit'>Shelve</Shelve>
+          <Shelve type='submit' disabled={!newBooks.length}>
+            Shelve
+          </Shelve>
         </fieldset>
       </StyledForm>
     </Wrapper>
   );
 }
+
+const storeConnector = ({ user }) => ({
+  userID: user.user_id,
+});
+
+const actionCreator = {
+  addBooksToShelf: shelfActions.addBooksToShelf,
+};
+
+export default connect(storeConnector, actionCreator)(BookMenu);
 
 const formIn = keyframes`
   90% {
@@ -344,5 +362,3 @@ const Item = styled.li<{ isHighlightedSuggestion: boolean }>`
   ${({ isHighlightedSuggestion }) =>
     isHighlightedSuggestion ? 'background-color:  #a8cff4' : 'color: black'};
 `;
-
-export default BookMenu;

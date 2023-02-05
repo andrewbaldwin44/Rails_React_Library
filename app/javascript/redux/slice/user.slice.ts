@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { updateStateWithPayload } from 'redux/utils';
 
 export interface IUserState {
