@@ -5,6 +5,12 @@ export const SHELF_KEYS = {
   ALL: 'all',
 };
 
+export interface IShelf {
+  key: (typeof SHELF_KEYS)[keyof typeof SHELF_KEYS];
+  title: string;
+  className?: string;
+}
+
 export const SHELVES = [
   { key: SHELF_KEYS.READING, title: 'Reading', className: 'reading' },
   { key: SHELF_KEYS.DECK, title: 'On Deck' },

@@ -1,6 +1,9 @@
+import { PayloadAction } from '@reduxjs/toolkit';
 import { merge } from 'utils/object';
-import type { Action } from 'redux/store';
 
-export function updateStateWithPayload<ReducerState>(state: ReducerState, { payload }: Action) {
-  return merge(state, payload);
+export function updateStateWithPayload<ReducerState, ReducerAction extends PayloadAction<any>>(
+  state: ReducerState,
+  { payload }: ReducerAction,
+) {
+  return merge(state, payload) as ReducerAction['payload'];
 }

@@ -22,7 +22,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser: updateStateWithPayload<IUserState>,
+    setUser: updateStateWithPayload<IUserState, UserAction>,
     clearUser: () => initialState,
   },
 });

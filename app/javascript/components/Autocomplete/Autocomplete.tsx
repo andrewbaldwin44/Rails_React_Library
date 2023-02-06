@@ -11,12 +11,12 @@ interface IAutocomplete<Item> {
   callback: (searchValue: string) => void;
 }
 
-export default function Autocomplete<Item>({
+export default function Autocomplete<Result>({
   callback,
   children,
   inputRef,
   results,
-}: IAutocomplete<Item>) {
+}: IAutocomplete<Result>) {
   const autocompleteRef = useRef<HTMLOListElement>(null);
   const [shouldShowAutofill, setShouldShowAutofill] = useState(false);
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(0);
@@ -40,7 +40,7 @@ export default function Autocomplete<Item>({
   const onClose = useCallback(() => setShouldShowAutofill(false), []);
 
   const handleKeyPress = useCallback(
-    ({ key }) => {
+    ({ key }: KeyboardEvent) => {
       if (!results || !inputRef.current) {
         return;
       }

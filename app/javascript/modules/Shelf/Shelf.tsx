@@ -2,22 +2,22 @@ import styled from 'styled-components';
 
 interface IShelf {
   title: string;
-  className: string;
-  id: string;
+  className?: string;
+  children: React.ReactNode;
 }
 
+const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
+  event.preventDefault();
+
+  const data = event.dataTransfer.getData('text');
+  event.currentTarget.appendChild(document.getElementById(data)!);
+};
+
+const allowDrop = (event: React.DragEvent<HTMLDivElement>) => {
+  event.preventDefault();
+};
+
 export default function Shelf({ title, className, children }: IShelf) {
-  const onDrop = e => {
-    e.preventDefault();
-
-    const data = e.dataTransfer.getData('text');
-    e.target.appendChild(document.getElementById(data));
-  };
-
-  const allowDrop = e => {
-    e.preventDefault();
-  };
-
   return (
     <Wrapper className={className}>
       <h2>{title}</h2>

@@ -10,4 +10,5 @@ export interface IBookData {
 
 export interface IBookMenuProps {
   openMenu: boolean;
+  setOpenMenu: (isOpen: boolean) => void;
 }

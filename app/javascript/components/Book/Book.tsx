@@ -3,11 +3,11 @@ import { IBookData } from 'components/BookMenu/types';
 
 export default function Book({ id, imageLinks }: IBookData) {
   if (!imageLinks) {
-    return;
+    return null;
   }
 
-  const onDrag = e => {
-    e.dataTransfer.setData('text', e.target.id);
+  const onDrag = (event: React.DragEvent<HTMLDivElement>) => {
+    event.dataTransfer.setData('text', (event.target as HTMLDivElement).id);
   };
 
   return (

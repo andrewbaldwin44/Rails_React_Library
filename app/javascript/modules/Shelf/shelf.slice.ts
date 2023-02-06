@@ -33,7 +33,7 @@ const shelfSlice = createSlice({
   name: 'shelf',
   initialState,
   reducers: {
-    setShelves: updateStateWithPayload<IShelfState>,
+    setShelves: updateStateWithPayload<IShelfState, ShelfAction>,
     addBooksToShelf,
   },
 });

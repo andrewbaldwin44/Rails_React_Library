@@ -1,11 +1,11 @@
-import { connect } from 'react-redux';
 import { useEffect, useState, useCallback, useRef } from 'react';
+import { connect } from 'react-redux';
 import styled, { keyframes } from 'styled-components';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import { BsBook } from 'react-icons/bs';
-import { FaBookOpen } from 'react-icons/fa';
+// import Checkbox from '@material-ui/core/Checkbox';
+// import { BsBook } from 'react-icons/bs';
+// import { FaBookOpen } from 'react-icons/fa';
 import type { IBookData, IBookMenuProps } from 'components/BookMenu/types';
 import Form from 'components/Form/Form';
 
@@ -15,6 +15,7 @@ import useAsync from 'hooks/useAsync';
 import { shelfActions } from 'modules/Shelf/shelf.slice';
 import type { IAddBooksToShelf } from 'modules/Shelf/shelf.slice';
 import { SHELF_KEYS } from 'modules/Shelf/shelf.constants';
+import type { IRootState } from 'redux/store';
 
 interface IBookMenu extends IBookMenuProps {
   onBookSearch: (search: string) => void;
@@ -25,22 +26,23 @@ interface IBookMenu extends IBookMenuProps {
 
 interface IBookSuggestion extends IBookData {
   updateNewBooks: (newBook: IBookData) => void;
-  onCloseAutocomplete: () => void;
-  isHighlightedSuggestion: boolean;
-  onMouseOver: () => void;
+  onCloseAutocomplete?: () => void;
+  isHighlightedSuggestion?: boolean;
+  onMouseOver?: () => void;
+  onClose?: () => void;
 }
 
 function BookSuggestion({
   updateNewBooks,
   onMouseOver,
-  isHighlightedSuggestion,
+  isHighlightedSuggestion = false,
   onClose,
   ...bookData
 }: IBookSuggestion) {
   const { authors, title, imageLinks } = bookData;
 
   const onBookSuggestionClick = () => {
-    onClose();
+    onClose && onClose();
     updateNewBooks(bookData);
   };
 
@@ -114,9 +116,9 @@ function BookMenu({
   userID,
   addBooksToShelf,
 }: IBookMenu) {
-  const menuOverlay = useRef<HTMLDivElement>();
-  const bookForm = useRef<HTMLFormElement>();
-  const bookSearchInputRef = useRef<HTMLInputElement>();
+  const menuOverlay = useRef<HTMLDivElement>(null);
+  const bookForm = useRef<HTMLFormElement>(null);
+  const bookSearchInputRef = useRef<HTMLInputElement>(null);
   const [newBooks, setNewBooks] = useState<IBookData[]>([]);
 
   const { execute: onBookAdd } = useAsync(() =>
@@ -196,13 +198,7 @@ function BookMenu({
           <fieldset className='autocomplete-input'>
             <label htmlFor='title'>Title</label>
             <AutocompleteWrapper>
-              <input
-                ref={bookSearchInputRef}
-                name='title'
-                id='title'
-                onInput={handleBookSearch}
-                autoComplete='off'
-              />
+              <input ref={bookSearchInputRef} name='title' id='title' autoComplete='off' />
               <Autocomplete<IBookData>
                 results={bookData}
                 inputRef={bookSearchInputRef}
@@ -229,7 +225,7 @@ function BookMenu({
   );
 }
 
-const storeConnector = ({ user }) => ({
+const storeConnector = ({ user }: IRootState) => ({
   userID: user.user_id,
 });
 
