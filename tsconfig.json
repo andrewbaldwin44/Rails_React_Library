@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "allowUmdGlobalAccess": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "baseUrl": "app/frontend",
+    "paths": {
+      "~/*": ["*"]
+    }
+  },
+  "include": ["app/frontend/**/*.ts", "app/frontend/**/*.tsx"],
+  "exclude": ["node_modules"]
+}
