@@ -55,6 +55,7 @@ export default function useAuth() {
 
   const loginWithEmail = async (authCallbackProps: IAuthCallbackProps) => {
     const { data, error } = await createSession(authCallbackProps);
+    console.log({ error });
     if (data) {
       setUser(adaptUserData(data));
     } else {

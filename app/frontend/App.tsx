@@ -15,7 +15,6 @@ function App() {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
         <AppRoutes />
       </ThemeProvider>
     </Provider>

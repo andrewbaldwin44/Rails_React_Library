@@ -2,6 +2,7 @@ class SessionsController < ApplicationController
   def create
     supabase_service = SupabaseService.new
     supabase_response = supabase_service.sign_in(session_params[:email], session_params[:password])
+    puts supabase_response
 
     if supabase_response.success?
       user_data = supabase_response.parsed_response['user']
@@ -13,10 +14,10 @@ class SessionsController < ApplicationController
         format.json { render json: @user, status: :created }
       end
     else
-      @login_error = supabase_response.parsed_response['error_description'] || 'Invalid email or password'
+      @login_error = supabase_response.parsed_response['msg'] || 'Invalid login credentials'
 
       respond_to do |format|
-        format.json { render json: @login_error, status: :unauthorized }
+        format.json { render json: {"message": @login_error}, status: :unauthorized }
       end
     end
   end
