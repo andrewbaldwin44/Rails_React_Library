@@ -28,6 +28,9 @@ const adaptUserData = ({ displayName, email, profilePicture }: IAuthUser) => ({
   profilePicture: profilePicture || DefaultProfile,
 });
 
+const unexpectedErrorMessage =
+  "An unexpected error has occured, please try again.";
+
 export default function useAuth() {
   const [errorMessage, setErrorMessage] = useState<string | undefined>("");
   const setUser = useAction(userActions.setUser);
@@ -40,20 +43,22 @@ export default function useAuth() {
   const [destroySession] = useDestroySessionMutation();
 
   const createUserWithEmail = async (authCallbackProps: IAuthCallbackProps) => {
-    try {
-      const { data } = await createUser(authCallbackProps);
+    const { data, error } = await createUser(authCallbackProps);
+    console.log({ data, error });
+
+    if (data) {
       setUser(adaptUserData(data));
-    } catch (error) {
-      setErrorMessage(error.message);
+    } else {
+      setErrorMessage(error?.data?.message || unexpectedErrorMessage);
     }
   };
 
   const loginWithEmail = async (authCallbackProps: IAuthCallbackProps) => {
-    try {
-      const { data } = await createSession(authCallbackProps);
+    const { data, error } = await createSession(authCallbackProps);
+    if (data) {
       setUser(adaptUserData(data));
-    } catch (error) {
-      setErrorMessage(error.message);
+    } else {
+      setErrorMessage(error?.data?.message || unexpectedErrorMessage);
     }
   };
 

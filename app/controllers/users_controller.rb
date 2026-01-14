@@ -1,21 +1,22 @@
 class UsersController < ApplicationController
     before_action :validate_profile_picture, only: [:create]
   
-    # POST /users or /users.json
+    # POST /users
     def create
       profile_picture = user_params[:profile_picture]
   
       supabase_service = SupabaseService.new
   
       supabase_response = supabase_service.sign_up(user_params[:email], user_params[:password])
-
-      new_user_params = {
-        email: user_params[:email],
-        display_name: user_params[:display_name],
-        uuid: supabase_response.parsed_response["user"]["id"],
-      }
-  
+      puts supabase_response
+      
       if supabase_response.success?
+        new_user_params = {
+          email: user_params[:email],
+          display_name: user_params[:display_name],
+          uuid: supabase_response.parsed_response["id"],
+        }
+
         @user = User.new(new_user_params)
   
         respond_to do |format|
@@ -34,6 +35,7 @@ class UsersController < ApplicationController
         end
       else
         @login_error = supabase_response.parsed_response["msg"] || "Something went wrong. Please try again."
+        puts @login_error
   
         respond_to do |format|
           format.json { render json: {"message": @login_error}, status: :unauthorized }
